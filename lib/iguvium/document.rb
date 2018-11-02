@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'pdf-reader'
-
 module Iguvium
   class Document
     def initialize(file)

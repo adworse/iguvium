@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
-require 'oily_png'
 require 'convolver-light'
+require 'csv'
 require 'fileutils'
 require 'matrix'
+require 'oily_png'
+require 'pdf-reader'
 
 require_relative 'iguvium/labeler'
 require_relative 'iguvium/cv'
