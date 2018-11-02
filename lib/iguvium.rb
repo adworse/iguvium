@@ -21,23 +21,16 @@ module Iguvium
 end
 
 
-# TODO
+# TODO: 3) The gem is annoyingly slow. I have some ideas how to deal with it, and speed things up at least a couple of times,
+# but it can break something unpleasantly, so extensive tests should be added.
 #
-# 2) Определить структуру классов и пространство имен.
-#     Есть большой соблазн влезть в общее с PDF::Reader пространство первого уровня. Типа PDF::Extractor::Document, PDF::Extractor::Page, PDF::Extractor::Table, PDF::Extractor::CV, PDF::Extractor::Labeller. Не знаю, хорошая ли это идея!
+# TODO: 4) Add options like 'print' with images or with generated graphics only, gs executable path, and maybe image thresholding
+
+# 5) This will make it version 0.8. Some options, faster than now but
 #
-# 3) Он неприятно медленный. У меня есть несколько идей, как его ускорить в несколько раз, но это может причудливо поломать разное, так что:
-# - тесты, хнык.
-#
-# 3.1) Еще нужно добавить несколько опций — в частности, опцию «распознавать с картинками или только с линиями»
-#
-# 4) после тестов можно паковать в гем. Тут меня интересует еще как правильно писать автодокументацию в комментариях, которая парсится в такое: https://www.rubydoc.info/gems/convolver-light/0.3.1/Convolver
-#
-# 5) Это будет версия, допустим, 0.8.
-#
-# 6) 0.9 — версия, которая умеет таблицы с торчащей гребенкой, типа
+# TODO: 6) 0.9 - version capable of reading tables with open outer cells, like this:
 # __|____|_______|_____|
 # __|____|_______|_____|
 # __|____|_______|_____|
 #
-#     7) 1.0 — умеет то же + таблицы с merged cells.
+# TODO: 7) 1.0 - in addition it should deal with merged cells (placing result to the upper left cell on the grid).

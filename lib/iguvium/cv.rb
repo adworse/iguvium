@@ -129,6 +129,7 @@ module Iguvium
         .tap { |ary| minimums(vector).each { |i| ary[i] = 1 } }
     end
 
+    # TODO: This entire thresholding could probably be removed. It works fine with THRESHOLD = 254, so what's the sense?
     def brightness(color)
       color > THRESHOLD ? THRESHOLD : color
     end

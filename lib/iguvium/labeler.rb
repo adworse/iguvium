@@ -91,6 +91,7 @@ module Iguvium
             next_label += 1
           else
             @labels[row][column] = neighbors.min
+            # TODO decide what to do with 3-point collisions
             puts 'Panic:', neighbors.uniq.count if neighbors.uniq.count > 2
             @equalities[neighbors.uniq.max] = neighbors.uniq.min if neighbors.uniq.count == 2
           end
