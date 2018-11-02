@@ -26,7 +26,7 @@ doc = Iguvium.new 'file.pdf'
 doc.pages.count
 tables = doc.pages[6].tables
 tables.first.to_a
-
+```
 
 
 ## Development
@@ -37,7 +37,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/iguvium.
+Bug reports and pull requests are welcome on GitHub at https://github.com/adworse/iguvium.
 
 ## License
 
