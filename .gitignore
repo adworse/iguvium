@@ -8,6 +8,8 @@
 /tmp/
 .idea/
 
+Gemfile.lock
+
 *.gem
 
 .DS_Store

@@ -10,9 +10,9 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Dima Ermilov']
   spec.email         = ['dima@scriptangle.com']
 
-  spec.summary       = 'TODO: Write a short summary, because RubyGems requires one.'
-  spec.description   = 'TODO: Write a longer description or delete this line.'
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = 'Extract tables from PDF as a structured info'
+  # spec.description   = 'TODO: Write a longer description or delete this line.'
+  spec.homepage      = 'https://github.com/adworse/iguvium'
   spec.license       = 'MIT'
 
   # Specify which files should be added to the gem when it is released.
@@ -23,6 +23,10 @@ Gem::Specification.new do |spec|
   spec.bindir        = 'exe'
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
+
+  spec.add_dependency 'pdf-reader', '~> 2.1.0'
+  spec.add_dependency 'convolver-light', '~> 0.3.1'
+  spec.add_dependency 'oily_png', '~> 1.2.1'
 
   spec.add_development_dependency 'bundler', '~> 1.16'
   spec.add_development_dependency 'rake', '~> 10.0'
