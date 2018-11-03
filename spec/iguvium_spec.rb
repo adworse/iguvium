@@ -4,40 +4,18 @@ require 'rspec'
 
 RSpec.describe Iguvium do
   describe '.read' do
-    context 'anna.pdf' do
-      let(:pages) { Iguvium.read('./spec/files/anna.pdf') }
+    subject(:pages) { Iguvium.read(path) }
 
-      it 'returns 24 elements' do
-        expect(pages.count).to eql(24)
-      end
+    {
+      './spec/files/anna.pdf' => 24,
+      './spec/files/remeslo.pdf' => 510,
+      './spec/files/immunity.pdf' => 78
+    }.each do |path, count|
+      context path do
+        let(:path) { path }
 
-      it 'elements are Iguvium::Page' do
-        expect(pages).to all be_a Iguvium::Page
-      end
-    end
-
-    context 'remeslo.pdf' do
-      let(:pages) { Iguvium.read('./spec/files/remeslo.pdf') }
-
-      it 'returns 510 elements' do
-        expect(pages.count).to eql(510)
-      end
-
-      it 'elements are Iguvium::Page' do
-        expect(pages).to all be_a Iguvium::Page
-      end
-
-    end
-
-    context 'immunity.pdf' do
-      let(:pages) { Iguvium.read('./spec/files/immunity.pdf') }
-
-      it 'returns 78 elements' do
-        expect(pages.count).to eql(78)
-      end
-
-      it 'elements are Iguvium::Page' do
-        expect(pages).to all be_a Iguvium::Page
+        it { expect(pages.count).to eql(count) }
+        it { expect(pages).to all be_a Iguvium::Page }
       end
     end
   end
