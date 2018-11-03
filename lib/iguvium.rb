@@ -16,7 +16,10 @@ require_relative 'iguvium/version'
 
 module Iguvium
   def self.read(path)
-    Document.new(path).pages
+    PDF::Reader.new(path)
+               .pages
+               .map { |page| Page.new(page, path) }
+    # Document.new(path).pages
   end
 end
 

@@ -2,10 +2,9 @@
 
 module Iguvium
   class Page
-    def initialize(doc, index)
-      @reader_page = doc.doc.pages[index]
-      @page_number = index + 1
-      @file = doc.file
+    def initialize(page, path)
+      @reader_page = page
+      @file = path
     end
 
     attr_reader :lines
@@ -24,7 +23,7 @@ module Iguvium
     private
 
     def recognize!
-      recognized = CV.new(@file, @page_number).recognize
+      recognized = CV.new(@file, @reader_page.number).recognize
       @lines = recognized[:lines]
       @boxes = recognized[:boxes].reject { |box| box_empty?(box) }
       @tables = @boxes.map { |box| Table.new(box, self) }.reverse
