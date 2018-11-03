@@ -26,11 +26,11 @@ RSpec.describe Iguvium do
 
     context 'immunity.pdf' do
       it 'returns array of 78' do
-        expect(Iguvium.read('./spec/files/remeslo.pdf').count).to eql(78)
+        expect(Iguvium.read('./spec/files/immunity.pdf').count).to eql(78)
       end
 
       it 'elements of array are of class Iguvium::Page' do
-        expect(Iguvium.read('./spec/files/remeslo.pdf').all? { |page| page.is_a?(Iguvium::Page) }).to be true
+        expect(Iguvium.read('./spec/files/immunity.pdf').all? { |page| page.is_a?(Iguvium::Page) }).to be true
       end
     end
   end
