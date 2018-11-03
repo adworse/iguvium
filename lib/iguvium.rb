@@ -9,7 +9,6 @@ require 'pdf-reader'
 
 require_relative 'iguvium/labeler'
 require_relative 'iguvium/cv'
-require_relative 'iguvium/document'
 require_relative 'iguvium/page'
 require_relative 'iguvium/table'
 require_relative 'iguvium/version'
@@ -19,7 +18,6 @@ module Iguvium
     PDF::Reader.new(path)
                .pages
                .map { |page| Page.new(page, path) }
-    # Document.new(path).pages
   end
 end
 
