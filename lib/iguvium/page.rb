@@ -20,6 +20,14 @@ module Iguvium
       @text ||= @reader_page.text
     end
 
+    def characters
+      return @characters if @characters
+
+      receiver = PDF::Reader::PageTextReceiver.new
+      @reader_page.send(:walk, receiver)
+      @characters = receiver.instance_variable_get('@characters')
+    end
+
     private
 
     def recognize!
@@ -36,12 +44,5 @@ module Iguvium
       }.empty?
     end
 
-    def characters
-      return @characters if @characters
-
-      receiver = PDF::Reader::PageTextReceiver.new
-      @reader_page.send(:walk, receiver)
-      @characters = receiver.instance_variable_get('@characters')
-    end
   end
 end

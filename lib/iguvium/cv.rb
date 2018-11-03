@@ -151,6 +151,7 @@ module Iguvium
     def box(coord_array)
       ax, bx = coord_array.map(&:last).minmax
       ay, by = coord_array.map(&:first).minmax
+      # TODO: To think about removing additional pixels from the box definition
       [ax - 1..bx + 1, ay - 1..by + 1]
     end
   end
