@@ -1,6 +1,7 @@
 # Iguvium
 
 This gem extracts tables from PDF files. That's it. I will write more words later.
+<img src="https://img2.mokum.place/system/images/stage1/000/365/384-83463a9f-9894-4d73-99f4-3fa8795ce66e.jpg" alt="Knorozov" width="250"/>
 ## Installation
 
 Make sure you have Ghostscript installed.
