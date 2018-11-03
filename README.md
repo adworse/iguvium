@@ -22,9 +22,9 @@ Or install it yourself as:
 ## Usage
 
 ```require 'iguvium'
-doc = Iguvium.new 'file.pdf'
-doc.pages.count
-tables = doc.pages[6].tables
+pages = Iguvium.read 'file.pdf'
+pages.count
+tables = pages[6].extract_tables!
 tables.first.to_a
 ```
 
