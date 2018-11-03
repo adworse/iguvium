@@ -6,12 +6,14 @@ module Iguvium
       @box = box
       @lines = page.lines
       @characters = page.characters
+      @page = page
     end
 
-    attr_reader :characters, :lines, :box
+    attr_reader :page, :characters, :lines, :box
 
     def to_a
-      grid[:rows]
+      @to_a ||=
+        grid[:rows]
         .reverse
         .map { |row| grid[:columns].map { |column| render chars_inside(column, row) } }
     end

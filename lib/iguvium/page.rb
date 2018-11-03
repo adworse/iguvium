@@ -10,7 +10,7 @@ module Iguvium
 
     attr_reader :lines
 
-    def tables
+    def extract_tables!
       return @tables if @tables
 
       recognize!
@@ -20,6 +20,8 @@ module Iguvium
     def text
       @text ||= @reader_page.text
     end
+
+    private
 
     def recognize!
       recognized = CV.new(@file, @page_number).recognize
