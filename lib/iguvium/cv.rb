@@ -45,7 +45,7 @@ module Iguvium
     end
 
     def boxes
-      Labeler.new(
+      @boxes ||= Labeler.new(
         image.pixels.map { |pix| 255 - pix }.each_slice(image.width).to_a
       ).clusters.map { |cluster| box cluster }
     end
@@ -74,7 +74,7 @@ module Iguvium
       png = @filepath.gsub(/\.pdf$/, '.png')
       LOGGER.info `gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=pngalpha -dGraphicsAlphaBits=4 \
     -r72 -dFirstPage=#{@pagenumber} -dLastPage=#{@pagenumber} \
-    -dFILTERTEXT -sOutputFile=#{png} #{@filepath}`
+    -dFILTERTEXT -sOutputFile=#{png} #{@filepath} 2>&1`
 
       @image = ChunkyPNG::Image.from_file(png)
       @image.flip_horizontally! # to deal with the difference in zero coordinates with pdf

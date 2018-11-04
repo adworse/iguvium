@@ -36,6 +36,7 @@ module Iguvium
       lines.select { |line| line_in_box?(line, box) }
            .map { |line| line.first.is_a?(Numeric) ? line.first : line.last }
            .sort
+           .uniq
            .each_cons(2)
            .map { |a, b| a...b }
     end
