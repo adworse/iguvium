@@ -8,7 +8,7 @@ RSpec.describe Iguvium::Table do
   context 'auction' do
     let(:path) { 'spec/files/auction.pdf' }
     let(:page_index) { 0 }
-    let(:table_index) { 2 }
+    let(:table_index) { 1 }
 
     it {
       expect(table.to_a).to eql(
@@ -118,6 +118,36 @@ RSpec.describe Iguvium::Table do
       )
       expect(table.to_csv).to eql(
         "\"1.\t\r  \nCommitment\t\r  \",\"2.\t\r  Doing/Not\t\r  \nDoing\t\r  \",\"3.\t\r  Hidden\t\r  Competing\t\r  \",\"4.\t\r  Big\t\r  Assumption(s)\t\r  \"\n\"(Improvement\t\r  \nGoal)\n\t\r  \",\"(Instead\t\r  of\t\r  #1)\n\t\r  \",\"Commitmen\nt\n\t\r  \",\"\"\n\"I\t\r  am\t\r  \ncommitted\t\r  to\t\r  \ngetting\t\r  better\t\r  \nat\t\r  and\t\r  being\t\r  \nrelaxed,\t\r  being\t\r  \ntruly\t\r  in\t\r  the\t\r  \nmoment,\t\r  \npresent,\t\r  \nlistening\t\r  more\t\r  \ncompletely.\t\r  \t\r  \",\"I\t\r  get\t\r  distracted\t\r  \nand\t\r  start\t\r  noticing\t\r  \nwhat\t\r  is\t\r  going\t\r  on\t\r  \naround\t\r  me,\t\r  or\t\r  \nthinking\t\r  about\t\r  \nwhat\t\r  is\t\r  next\t\r  on\t\r  \nmy\t\r  agenda,\t\r  or\t\r  \nthinking\t\r  about\t\r  \nwhere\t\r  I’d\t\r  rather\t\r  \nbe.\t\r  \n\t\r  \nI\t\r  listen\t\r  to\t\r  \nportions\t\r  of\t\r  what\t\r  \nsomeone\t\r  is\t\r  \nsaying\t\r  and\t\r  then\t\r  \nanticipate\t\r  how\t\r  \nthey’ll\t\r  finish.\t\r  \n\t\r  \nI\t\r  might\t\r  respond\t\r  \nin\t\r  a\t\r  way\t\r  that\t\r  \ndoesn’t\t\r  \naccurately\t\r  \naddress\t\r  what\t\r  \nwas\t\r  asked.\t\r  \t\r  \n\t\r  \",\"Worries:\t\r  \t\r  that\t\r  I\t\r  will\t\r  \nfeel\t\r  anxiety,\t\r  that\t\r  others\t\r  \nwill\t\r  get\t\r  the\t\r  wrong\t\r  \nimpression\t\r  of\t\r  me\t\r  \n\t\r  \n\t\r  -­‐-­‐-­‐-­‐-­‐-­‐-­‐-­‐-­‐-­‐-­‐-­‐-­‐-­‐-­‐-­‐-­‐-­‐-­‐-­‐-­‐-­‐-­‐-­‐-­‐-­‐-­‐-­‐-­‐\t\r  \n\t\r  \nI\t\r  am\t\r  also\t\r  committed…\t\r  \n\t\r  \nTo\t\r  not\t\r  letting\t\r  people\t\r  \nsee\t\r  what\t\r  I\t\r  don’t\t\r  want\t\r  \nthem\t\r  to\t\r  see.\t\r  \n\t\r  \nTo\t\r  not\t\r  having\t\r  my\t\r  social\t\r  \nand\t\r  professional\t\r  \ninteractions\t\r  be\t\r  not\t\r  on\t\r  \nmy\t\r  terms.\t\r  \n\t\r  \nTo\t\r  not\t\r  feeling\t\r  out\t\r  of\t\r  \ncontrol.\t\r  \n\t\r  \nTo\t\r  not\t\r  having\t\r  things\t\r  go\t\r  \nsome\t\r  way\t\r  I\t\r  don’t\t\r  want\t\r  \nthem\t\r  to.\t\r  \n\t\r  \",\"I\t\r  assume…\t\r  \n\t\r  \nI\t\r  must\t\r  focus\t\r  all\t\r  energy\t\r  on\t\r  \ntracking\t\r  the\t\r  things\t\r  I’m\t\r  \nsaying\t\r  in\t\r  the\t\r  conversation\t\r  \nso\t\r  that\t\r  I\t\r  don’t\t\r  forget\t\r  the\t\r  \nthing\t\r  I\t\r  want\t\r  to\t\r  say\t\r  next…\t\r  \n\t\r  \nOthers\t\r  are\t\r  constantly\t\r  \nevaluating\t\r  me,\t\r  forming\t\r  \nimpressions\t\r  (as\t\r  I\t\r  am\t\r  of\t\r  \nthem…).\t\r  \n\t\r  \nI\t\r  must\t\r  manage\t\r  the\t\r  \nimpression\t\r  others\t\r  have\t\r  of\t\r  \nme\t\r  or\t\r  I\t\r  will\t\r  feel\t\r  out\t\r  of\t\r  \ncontrol,\t\r  depressed.\t\r  \n\t\r  \nI\t\r  must\t\r  feel\t\r  and\t\r  come\t\r  across\t\r  \nto\t\r  others\t\r  as\t\r  successful,\t\r  \ncharming,\t\r  put-­‐together,\t\r  \nsmart,\t\r  and\t\r  witty.\t\r  \n\t\r  \nI\t\r  assume\t\r  that\t\r  silence/white\t\r  \nspace\t\r  in\t\r  conversations\t\r  is\t\r  \"\n"
+      )
+    }
+  end
+
+  context 'quote' do
+    let(:path) { 'spec/files/quote.pdf' }
+    let(:page_index) { 0 }
+    let(:table_index) { 0 }
+
+    it {
+      expect(table.to_a).to eql(
+        [
+          ['Product Code', 'Product', 'List Price', 'Disc %', 'Sale Price', 'Quantity', 'Amount'],
+          ['LKHDKJHKiuewiudk', "lihjeoriuh ISLKJHFKLJ -\nsljhkl kljdsfkjlksl;dkj", '$65842.40', '57.00', '$32554.86', '2.00', '$84864.32'],
+          [
+            'KUJGHDKUJHKJN klhs',
+            "wwnfdqz bghoneee pxbehsoh\ndfsdfsdfsdfsdf sf\nLKLhiofdiolip lkjdfe\n* OLoijoidf jkjhdlkfjhldkfjh\nLdkj LIKDLKJLEJ\n* ;lkjL:DKj DDD\n* sd'pksdf;ksd[foksd[ fdP:dk\n* ;ojksdpfoiu pppdppdk\nKJjjduuudu",
+            '$0', '11.00', '$0', '4.00', '$0'
+          ],
+          ["PIJOPIHD-LKJS-EWUCN\n-TS", 'SVJB RYJO TUZEIR ZCUBUT', '', '11.00', '', '1.00', ''],
+          ['A-XAE-KAP-V.H-GL', 'QNX I.X" BXV', '', '66.00', '', '2.00', ''],
+          ["F-ARH-CZLDBJ-T.N-A-Z\nD", 'G.QTRC N.I" LQH', '', '88.00', '', '3.00', ''],
+          ['W-FVJ-ATF-A-S-DP', "11ZbV Tvbv ZJY+ Sliwomh\nWxoookn", '', '32.10', '', '1.00', ''],
+          ['H-VPO-HUZC-ME-MBO', "4KD Fhdoihqtbj Jxmabb\neqluuhp rcb Clqlfph RU-5426-Y4", "$\n86011.83", '21.00', "$\n3582.20", '1.00', "$\n2028.54"],
+          ['O-PJH-HWXU-OE', "Ceoerpq, RFA psgzgszuxur\nhfp ZX-1850-K7; Xzved hhw\nfdlt le komlvq", '$72564.91', '32.00', '$3493.76', '1.00', '$7800.24'],
+          ['A-CYA-QAHN-LR', 'Kx Wxguab gng Kq Vprschwzfvku', '$0.00', '', '$0.00', '1.00', '$0.00']
+        ]
+      )
+      expect(table.to_csv).to eql(
+        "Product Code,Product,List Price,Disc %,Sale Price,Quantity,Amount\nLKHDKJHKiuewiudk,\"lihjeoriuh ISLKJHFKLJ -\nsljhkl kljdsfkjlksl;dkj\",$65842.40,57.00,$32554.86,2.00,$84864.32\nKUJGHDKUJHKJN klhs,\"wwnfdqz bghoneee pxbehsoh\ndfsdfsdfsdfsdf sf\nLKLhiofdiolip lkjdfe\n* OLoijoidf jkjhdlkfjhldkfjh\nLdkj LIKDLKJLEJ\n* ;lkjL:DKj DDD\n* sd'pksdf;ksd[foksd[ fdP:dk\n* ;ojksdpfoiu pppdppdk\nKJjjduuudu\",$0,11.00,$0,4.00,$0\n\"PIJOPIHD-LKJS-EWUCN\n-TS\",SVJB RYJO TUZEIR ZCUBUT,\"\",11.00,\"\",1.00,\"\"\nA-XAE-KAP-V.H-GL,\"QNX I.X\"\" BXV\",\"\",66.00,\"\",2.00,\"\"\n\"F-ARH-CZLDBJ-T.N-A-Z\nD\",\"G.QTRC N.I\"\" LQH\",\"\",88.00,\"\",3.00,\"\"\nW-FVJ-ATF-A-S-DP,\"11ZbV Tvbv ZJY+ Sliwomh\nWxoookn\",\"\",32.10,\"\",1.00,\"\"\nH-VPO-HUZC-ME-MBO,\"4KD Fhdoihqtbj Jxmabb\neqluuhp rcb Clqlfph RU-5426-Y4\",\"$\n86011.83\",21.00,\"$\n3582.20\",1.00,\"$\n2028.54\"\nO-PJH-HWXU-OE,\"Ceoerpq, RFA psgzgszuxur\nhfp ZX-1850-K7; Xzved hhw\nfdlt le komlvq\",$72564.91,32.00,$3493.76,1.00,$7800.24\nA-CYA-QAHN-LR,Kx Wxguab gng Kq Vprschwzfvku,$0.00,\"\",$0.00,1.00,$0.00\n"
       )
     }
   end
