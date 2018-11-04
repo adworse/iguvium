@@ -37,15 +37,15 @@ module Iguvium
     def lines
       @lines ||=
         {
-          vertical: Labeler.new(verticals).lines,
-          horizontal: Labeler.new(horizontals).lines
+          vertical: Labeler.new(verticals).lines.map { |line| flip_line line }.sort_by { |x, yrange| [yrange.begin, x] },
+          horizontal: Labeler.new(horizontals).lines.map { |line| flip_line line }.sort_by { |xrange, y| [y] }
         }
     end
 
     def boxes
       @boxes ||= Labeler.new(
         image.pixels.map { |pix| 255 - pix }.each_slice(image.width).to_a
-      ).clusters.map { |cluster| box cluster }
+      ).clusters.map { |cluster| box cluster }.sort_by { |xrange, yrange| [yrange.begin, xrange.begin] }
     end
 
     private
@@ -73,10 +73,34 @@ module Iguvium
     -dFILTERTEXT -sOutputFile=#{png} #{@filepath} 2>&1`
 
       @image = ChunkyPNG::Image.from_file(png)
-      @image.flip_horizontally! # to deal with the difference in zero coordinates with pdf
       File.delete png
       @image = blur @image
     end
+
+    # START OF FLIPPER CODE
+    def flip_y(coord)
+      @height ||= @image.height
+      @height - coord - 1
+    end
+
+    def flip_range(range)
+      flip_y(range.end)..flip_y(range.begin)
+    end
+
+    def flip_line(line)
+      y = line.last
+      y = if y.is_a?(Numeric)
+            flip_y y
+          elsif y.is_a?(Range)
+            flip_range y
+          else
+            raise ArgumentError, 'WTF?!'
+      end
+
+      [line.first, y]
+    end
+
+    # END OF FLIPPER CODE
 
     def blur(image)
       blurred = convolve to_narray(image), GAUSS
@@ -136,7 +160,7 @@ module Iguvium
       ay, by = coord_array.map(&:first).minmax
       # additional pixels removed from the box definition
       # [ax - 1..bx + 1, ay - 1..by + 1]
-      [ax..bx, ay..by]
+      [ax..bx, flip_range(ay..by)]
     end
   end
 end

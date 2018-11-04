@@ -56,11 +56,11 @@ module Iguvium
     end
 
     def render(characters)
-      # TODO: add switch to invoke .strip.gsub(/[\s|\p{Z}]+/, ' ')
+      # TODO: add switch to choose between newline and space joining
       characters
         .sort
         .chunk_while { |a, b| a.mergable?(b) }
-        .map { |chunk| chunk.inject(&:+).to_s }
+        .map { |chunk| chunk.inject(&:+).to_s.strip.gsub(/[\s|\p{Z}]+/, ' ') }
         .join("\n")
     end
   end
