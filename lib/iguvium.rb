@@ -28,11 +28,11 @@ module Iguvium
   end
 end
 
-# TODO: 3) The gem is annoyingly slow. I have some ideas how to deal with it, and speed things up at least a couple of times,
-# but it can break something unpleasantly, so extensive tests should be added.
+# The gem is annoyingly slow. I've succeeded to speed it up at least a couple of times, but we need to go deeper.
+# TODO: 3) Play with RubyProf. Read about ruby performance. Try in-place labelling.
 #
 # TODO: 4) Add options like 'print' with images or with generated graphics only, gs executable path, and maybe image thresholding
-
+#
 # 5) This will make it version 0.8. Some options, faster than now but still basic
 #
 # TODO: 6) 0.9 - version capable of reading tables with open outer cells, like this:
