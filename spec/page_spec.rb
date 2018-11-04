@@ -56,4 +56,24 @@ RSpec.describe Iguvium::Page do
         .and all be_a Iguvium::Table
     end
   end
+
+  context 'david pages' do
+    let(:path) { 'spec/files/david.pdf' }
+    let(:page_index) { 6 }
+    let(:tables) { page.extract_tables! }
+
+    it { expect(page.text).to be_a String }
+
+    it do
+      expect(page.text.strip).to start_with(
+        "Immunity\t\r  Map\t\r  \n\t\r  \nCreating\t\r  an\t\r  immunity\t\r  to\t\r  change\t\r"
+      )
+    end
+
+    it '#extract_tables! returns 1 of Iguvium::Table' do
+      expect(tables)
+        .to have_attributes(count: 1)
+        .and all be_a Iguvium::Table
+    end
+  end
 end

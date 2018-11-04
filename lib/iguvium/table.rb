@@ -56,7 +56,7 @@ module Iguvium
     end
 
     def render(characters)
-      # TODO: add switch to invoke .gsub(/\s+/, ' ')
+      # TODO: add switch to invoke .strip.gsub(/[\s|\p{Z}]+/, ' ')
       characters
         .sort
         .chunk_while { |a, b| a.mergable?(b) }

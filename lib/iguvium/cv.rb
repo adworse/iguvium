@@ -21,8 +21,6 @@ module Iguvium
     [-1, 2, -1]
   ]
 
-  THRESHOLD = 254
-
   class CV
     def initialize(filepath, pagenumber = 1)
       @filepath = filepath
@@ -69,10 +67,8 @@ module Iguvium
     def image
       return @image if @image
 
-      # TODO: switch to .rgb file format to speed things up
-
-      png = @filepath.gsub(/\.pdf$/, '.png')
-      LOGGER.info `gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=pngalpha -dGraphicsAlphaBits=4 \
+      png = @filepath.gsub(/\.pdf$/, '.rgb')
+      LOGGER.info `gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=pnggray -dGraphicsAlphaBits=4 \
     -r72 -dFirstPage=#{@pagenumber} -dLastPage=#{@pagenumber} \
     -dFILTERTEXT -sOutputFile=#{png} #{@filepath} 2>&1`
 
@@ -105,8 +101,6 @@ module Iguvium
     end
 
     def to_narray(image)
-      # TODO: replace it with ghostscript grayscaling, test extensively
-      image.grayscale!
       NArray[
           image.pixels.map { |color|
             ChunkyPNG::Color.grayscale_teint ChunkyPNG::Color.compose(color, 0xffffffff)
@@ -129,29 +123,18 @@ module Iguvium
         .tap { |ary| minimums(vector).each { |i| ary[i] = 1 } }
     end
 
-    # TODO: This entire thresholding could probably be removed. It works fine with THRESHOLD = 254, so what's the sense?
-    def brightness(color)
-      color > THRESHOLD ? THRESHOLD : color
-    end
-
     def horizontal_scan(image)
-      Matrix.rows(
-        image.height.times.map { |row_index|
-          edges(image.row(row_index).map { |color| brightness color })
-        }
-      )
+      Matrix.rows(Array.new(image.height) { |row_index| edges(image.row(row_index)) })
     end
 
     def vertical_scan(image)
-      Matrix.rows image.width.times.map { |col_index|
-        edges(image.column(col_index).map { |color| brightness color })
-      }.transpose
+      Matrix.rows Array.new(image.width) { |col_index| edges(image.column(col_index)) }.transpose
     end
 
     def box(coord_array)
       ax, bx = coord_array.map(&:last).minmax
       ay, by = coord_array.map(&:first).minmax
-      # TODO: To think about removing additional pixels from the box definition
+      # TODO: Think about removing additional pixels from the box definition
       [ax - 1..bx + 1, ay - 1..by + 1]
     end
   end
