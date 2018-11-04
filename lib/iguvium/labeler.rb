@@ -57,7 +57,8 @@ module Iguvium
       elsif ys.uniq.count / ys.count.to_f < FLAT_THRESHOLD
         [xs.min..xs.max, ys.max_by { |i| ys.count i }]
       else
-        puts "NonFlattable, #{cluster.inspect}"
+        LOGGER.warn "NonFlattable, #{cluster.inspect}"
+        nil
         # raise NonFlattable, cluster.inspect
       end
     end
@@ -92,7 +93,7 @@ module Iguvium
           else
             @labels[row][column] = neighbors.min
             # TODO decide what to do with 3-point collisions
-            puts 'Panic:', neighbors.uniq.count if neighbors.uniq.count > 2
+            LOGGER.warn("Panic: #{neighbors.uniq.count}") if neighbors.uniq.count > 2
             @equalities[neighbors.uniq.max] = neighbors.uniq.min if neighbors.uniq.count == 2
           end
         end

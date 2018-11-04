@@ -3,6 +3,7 @@
 require 'convolver-light'
 require 'csv'
 require 'fileutils'
+require 'logger'
 require 'matrix'
 require 'oily_png'
 require 'pdf-reader'
@@ -12,6 +13,12 @@ require_relative 'iguvium/cv'
 require_relative 'iguvium/page'
 require_relative 'iguvium/table'
 require_relative 'iguvium/version'
+
+LOGGER = Logger.new(STDOUT)
+LOGGER.level = Logger::ERROR
+LOGGER.formatter = proc do |severity, datetime, progname, msg|
+  "#{severity}: #{msg}\n"
+end
 
 module Iguvium
   def self.read(path)

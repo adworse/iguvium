@@ -72,7 +72,7 @@ module Iguvium
       # TODO: switch to .rgb file format to speed things up
 
       png = @filepath.gsub(/\.pdf$/, '.png')
-      puts `gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=pngalpha -dGraphicsAlphaBits=4 \
+      LOGGER.info `gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=pngalpha -dGraphicsAlphaBits=4 \
     -r72 -dFirstPage=#{@pagenumber} -dLastPage=#{@pagenumber} \
     -dFILTERTEXT -sOutputFile=#{png} #{@filepath}`
 
