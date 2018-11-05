@@ -23,8 +23,10 @@ module Iguvium
 
   class CV
     def initialize(image)
-      @image = image
+      @image = blur image
     end
+
+    attr_reader :image
 
     def recognize
       {
@@ -63,9 +65,9 @@ module Iguvium
         .to_a
     end
 
-    def image
-      @blurred ||= blur @image
-    end
+    # def image
+    #   @blurred ||= blur @image
+    # end
 
     # START OF FLIPPER CODE
     def flip_y(coord)
@@ -121,13 +123,29 @@ module Iguvium
       ].reshape(image.width, image.height)
     end
 
-    def minimums(ary)
+    def minimums_old(ary)
       ary.each_cons(2)
          .each_with_index
          .map { |(a, b), i| [i + 1, a <=> b] }
          .slice_when { |a, b| a.last != -1 && b.last == -1 }
+         .to_a
          .map { |seq| seq.reverse.detect do |a| a.last == 1 end&.first }
          .compact
+    end
+
+    def minimums(ary)
+      # This ugly piece of code takes ~200 ms per page scan to run vs ~700 ms for the prettier old one
+      i = 0
+      mins = []
+      local = 0
+      while i + 2 < ary.length
+        local = i + 1 if ary[i] > ary[i + 1]
+        if ary[i] >= ary[i + 1] && ary[i + 1] < ary[i + 2]
+          mins << local if local
+        end
+        i += 1
+      end
+      mins
     end
 
     def edges(vector)
