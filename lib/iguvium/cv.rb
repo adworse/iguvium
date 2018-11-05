@@ -52,14 +52,14 @@ module Iguvium
 
     def verticals(treshold = 3)
       Matrix
-        .rows(convolve(NArray[*horizontal_scan(image).to_a], VERTICAL, 0).to_a)
+        .rows(convolve(NArray[*horizontal_scan(image)], VERTICAL, 0).to_a)
         .map { |pix| pix < treshold ? nil : pix }
         .to_a
     end
 
     def horizontals(treshold = 3)
       Matrix
-        .rows(convolve(NArray[*vertical_scan(image).to_a], HORIZONTAL, 0).to_a)
+        .rows(convolve(NArray[*vertical_scan(image)], HORIZONTAL, 0).to_a)
         .map { |pix| pix < treshold ? nil : pix }
         .to_a
     end
@@ -104,6 +104,7 @@ module Iguvium
 
     def blur(image)
       blurred = convolve to_narray(image), GAUSS
+      # TODO: Get rid of ChunkyPNG::Image on this stage completely
       blurred.to_a.each_with_index do |row, i|
         image.replace_row! i, row
       end
@@ -133,11 +134,12 @@ module Iguvium
     end
 
     def minimums(ary)
+      # TODO: #each_with_index is almost 1.7 slower than while loop
       ary.each_cons(2)
          .each_with_index
          .map { |(a, b), i| [i + 1, a <=> b] }
          .slice_when { |a, b| a.last != -1 && b.last == -1 }
-         .map { |seq| seq.select { |a| a.last == 1 }.last&.first }
+         .map { |seq| seq.reverse.detect { |a| a.last == 1 }&.first }
          .compact
     end
 
@@ -147,12 +149,13 @@ module Iguvium
         .tap { |ary| minimums(vector).each { |i| ary[i] = 1 } }
     end
 
+    # TODO: Get rid of Matrix in both scans
     def horizontal_scan(image)
-      Matrix.rows(Array.new(image.height) { |row_index| edges(image.row(row_index)) })
+      Array.new(image.height) { |row_index| edges(image.row(row_index)) }
     end
 
     def vertical_scan(image)
-      Matrix.rows Array.new(image.width) { |col_index| edges(image.column(col_index)) }.transpose
+      Array.new(image.width) { |col_index| edges(image.column(col_index)) }.transpose
     end
 
     def box(coord_array)
