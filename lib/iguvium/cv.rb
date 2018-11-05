@@ -149,7 +149,6 @@ module Iguvium
         .tap { |ary| minimums(vector).each { |i| ary[i] = 1 } }
     end
 
-    # TODO: Get rid of Matrix in both scans
     def horizontal_scan(image)
       Array.new(image.height) { |row_index| edges(image.row(row_index)) }
     end
