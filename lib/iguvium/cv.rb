@@ -44,7 +44,7 @@ module Iguvium
 
     def boxes
       @boxes ||= Labeler.new(
-        image.pixels.map { |pix| 255 - pix }.each_slice(image.width).to_a
+        image.map { |row| row.map { |pix| 255 - pix } }
       ).clusters.map { |cluster| box cluster }.sort_by { |xrange, yrange| [yrange.begin, xrange.begin] }
     end
 
@@ -79,7 +79,7 @@ module Iguvium
 
     # START OF FLIPPER CODE
     def flip_y(coord)
-      @height ||= @image.height
+      @height ||= @image.count
       @height - coord - 1
     end
 
@@ -103,12 +103,7 @@ module Iguvium
     # END OF FLIPPER CODE
 
     def blur(image)
-      blurred = convolve to_narray(image), GAUSS
-      # TODO: Get rid of ChunkyPNG::Image on this stage completely
-      blurred.to_a.each_with_index do |row, i|
-        image.replace_row! i, row
-      end
-      image
+      convolve(to_narray(image), GAUSS).to_a
     end
 
     def convolve(narray, conv, border_value = 255)
@@ -150,11 +145,11 @@ module Iguvium
     end
 
     def horizontal_scan(image)
-      Array.new(image.height) { |row_index| edges(image.row(row_index)) }
+      image.map { |row| edges row }
     end
 
     def vertical_scan(image)
-      Array.new(image.width) { |col_index| edges(image.column(col_index)) }.transpose
+      image.transpose.map { |row| edges row }.transpose
     end
 
     def box(coord_array)
