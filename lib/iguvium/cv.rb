@@ -38,7 +38,7 @@ module Iguvium
       @lines ||=
         {
           vertical: Labeler.new(verticals).lines.map { |line| flip_line line }.sort_by { |x, yrange| [yrange.begin, x] },
-          horizontal: Labeler.new(horizontals).lines.map { |line| flip_line line }.sort_by { |xrange, y| [y] }
+          horizontal: Labeler.new(horizontals).lines.map { |line| flip_line line }.sort_by { |_xrange, y| [y] }
         }
     end
 
@@ -129,12 +129,11 @@ module Iguvium
     end
 
     def minimums(ary)
-      # TODO: #each_with_index is almost 1.7 slower than while loop
       ary.each_cons(2)
          .each_with_index
          .map { |(a, b), i| [i + 1, a <=> b] }
          .slice_when { |a, b| a.last != -1 && b.last == -1 }
-         .map { |seq| seq.reverse.detect { |a| a.last == 1 }&.first }
+         .map { |seq| seq.reverse.detect do |a| a.last == 1 end&.first }
          .compact
     end
 
