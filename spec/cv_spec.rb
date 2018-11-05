@@ -3,7 +3,7 @@
 require 'rspec'
 
 RSpec.describe Iguvium::CV do
-  subject(:cv) { Iguvium::CV.new(path, page_index + 1) }
+  subject(:cv) { Iguvium::CV.new(Iguvium::Image.read(path, page_index + 1)) }
 
   context 'auction' do
     let(:path) { 'spec/files/auction.pdf' }

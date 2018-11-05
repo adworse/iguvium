@@ -31,7 +31,8 @@ module Iguvium
     private
 
     def recognize!
-      recognized = CV.new(@file, @reader_page.number).recognize
+      image = Image.read(@file, @reader_page.number)
+      recognized = CV.new(image).recognize
       @lines = recognized[:lines]
       @boxes = recognized[:boxes].reject { |box| box_empty?(box) }
       @tables = @boxes.map { |box| Table.new(box, self) }.reverse

@@ -10,6 +10,7 @@ require 'pdf-reader'
 
 require_relative 'iguvium/labeler'
 require_relative 'iguvium/cv'
+require_relative 'iguvium/image'
 require_relative 'iguvium/page'
 require_relative 'iguvium/table'
 require_relative 'iguvium/version'

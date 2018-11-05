@@ -22,9 +22,8 @@ module Iguvium
   ]
 
   class CV
-    def initialize(path, pagenumber = 1)
-      @path = path
-      @pagenumber = pagenumber
+    def initialize(image)
+      @image = image
     end
 
     def recognize
@@ -65,21 +64,12 @@ module Iguvium
     end
 
     def image
-      return @image if @image
-
-      png = @path.gsub(/\.pdf$/, '.rgb')
-      LOGGER.info `gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=pnggray -dGraphicsAlphaBits=4 \
-    -r72 -dFirstPage=#{@pagenumber} -dLastPage=#{@pagenumber} \
-    -dFILTERTEXT -sOutputFile=#{png} #{@path} 2>&1`
-
-      @image = ChunkyPNG::Image.from_file(png)
-      File.delete png
-      @image = blur @image
+      @blurred ||= blur @image
     end
 
     # START OF FLIPPER CODE
     def flip_y(coord)
-      @height ||= @image.count
+      @height ||= image.count
       @height - coord - 1
     end
 
@@ -95,7 +85,7 @@ module Iguvium
             flip_range y
           else
             raise ArgumentError, 'WTF?!'
-      end
+          end
 
       [line.first, y]
     end
@@ -121,10 +111,13 @@ module Iguvium
     end
 
     def to_narray(image)
+      palette = image.pixels.uniq
+      # Precalculation looks stupid but spares up to 0.35 seconds on calculation depending on colorspace width
+      dict = palette.zip(
+        palette.map { |color| ChunkyPNG::Color.grayscale_teint ChunkyPNG::Color.compose(color, 0xffffffff) }
+      ).to_h
       NArray[
-          image.pixels.map { |color|
-            ChunkyPNG::Color.grayscale_teint ChunkyPNG::Color.compose(color, 0xffffffff)
-          }
+          image.pixels.map { |color| dict[color] }
       ].reshape(image.width, image.height)
     end
 

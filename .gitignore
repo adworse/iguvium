@@ -11,6 +11,7 @@
 Gemfile.lock
 
 *.gem
+prof*
 
 .DS_Store
 ._.DS_Store
