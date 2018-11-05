@@ -60,7 +60,7 @@ module Iguvium
       characters
         .sort
         .chunk_while { |a, b| a.mergable?(b) }
-        .map { |chunk| chunk.inject(&:+).to_s.strip.gsub(/[\s|\p{Z}]+/, ' ') }
+        .map { |chunk| chunk.inject(:+).to_s.strip.gsub(/[\s|\p{Z}]+/, ' ') }
         .join("\n")
     end
   end

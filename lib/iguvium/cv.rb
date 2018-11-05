@@ -22,8 +22,8 @@ module Iguvium
   ]
 
   class CV
-    def initialize(filepath, pagenumber = 1)
-      @filepath = filepath
+    def initialize(path, pagenumber = 1)
+      @path = path
       @pagenumber = pagenumber
     end
 
@@ -67,10 +67,10 @@ module Iguvium
     def image
       return @image if @image
 
-      png = @filepath.gsub(/\.pdf$/, '.rgb')
+      png = @path.gsub(/\.pdf$/, '.rgb')
       LOGGER.info `gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=pnggray -dGraphicsAlphaBits=4 \
     -r72 -dFirstPage=#{@pagenumber} -dLastPage=#{@pagenumber} \
-    -dFILTERTEXT -sOutputFile=#{png} #{@filepath} 2>&1`
+    -dFILTERTEXT -sOutputFile=#{png} #{@path} 2>&1`
 
       @image = ChunkyPNG::Image.from_file(png)
       File.delete png
