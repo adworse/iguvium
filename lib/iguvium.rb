@@ -30,7 +30,8 @@ module Iguvium
 end
 
 # The gem is annoyingly slow. I've succeeded to speed it up at least a couple of times, but we need to go deeper.
-# TODO: 3) Play with RubyProf. Read about ruby performance. Try in-place labelling.
+#
+# TODO: 8) Add CLI
 #
 # TODO: 4) Add options like gs executable path, and maybe image thresholding
 #

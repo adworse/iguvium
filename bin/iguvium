@@ -1,0 +1,42 @@
+#!/usr/bin/env ruby
+
+require "iguvium"
+require 'slop'
+
+opts = Slop.parse do |o|
+  o.array '-p', '--pages', 'page numbers'
+  o.bool '-i', '--images', 'Use pictures in pdf (usually a bad idea)'
+  o.bool '-n', '--newlines', 'keep newlines'
+  o.on '--version', 'print the version' do
+    puts Iguvium::VERSION
+    exit
+  end
+  o.on '-h', '--help', 'show help'do
+    puts o
+    exit
+  end
+end
+
+path = opts.args.first
+
+abort('No file name') unless path
+
+opts = opts.to_hash
+page_numbers = opts.delete(:pages).map { |number| number.to_i - 1 }
+
+pages = Iguvium.read(path, opts)
+
+page_numbers = pages.count.times.to_a if page_numbers.empty?
+
+puts page_numbers.inspect
+puts opts.to_hash.inspect
+
+page_numbers.each do |number|
+  tables = pages[number].extract_tables!(opts)
+  tables.each_with_index do |table, i|
+    File.write "#{path.gsub(/\.pdf$/, '')}_page_#{number + 1}_table_#{i}.csv", table.to_csv(opts)
+  end
+end
+
+
+

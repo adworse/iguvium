@@ -21,13 +21,18 @@ then recognizes table separators optically. No OpenCV or other heavy dependencie
   spec.files         = Dir.chdir(File.expand_path(__dir__)) do
     `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   end
-  spec.bindir        = 'exe'
-  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+
+  # spec.bindir        = 'exe'
+  # spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+
+  spec.executables   = ['iguvium']
+
   spec.require_paths = ['lib']
 
   spec.add_dependency 'pdf-reader', '~> 2.1'
   spec.add_dependency 'convolver-light', '~> 0.3.1'
   spec.add_dependency 'oily_png', '~> 1.2'
+  spec.add_dependency 'slop', '~> 4.2'
 
   spec.add_development_dependency 'bundler', '~> 1.16'
   spec.add_development_dependency 'rake', '~> 10.0'
