@@ -44,30 +44,30 @@ module Iguvium
     end
 
     def boxes
-      @boxes ||= Labeler.new(
-        image.map { |row| row.map { |pix| 255 - pix } }
+      return @boxes if @boxes
+
+      brightest = image.flatten.max
+      @boxes = Labeler.new(
+        # image.map { |row| row.map { |pix| 255 - pix } }
+        image.map { |row| row.map { |pix| pix < brightest } }
       ).clusters.map { |cluster| box cluster }.sort_by { |xrange, yrange| [yrange.begin, xrange.begin] }
     end
 
     private
 
-    def verticals(treshold = 3)
+    def verticals(threshold = 3)
       Matrix
         .rows(convolve(NArray[*horizontal_scan(image)], VERTICAL, 0).to_a)
-        .map { |pix| pix < treshold ? nil : pix }
+        .map { |pix| pix < threshold ? nil : pix }
         .to_a
     end
 
-    def horizontals(treshold = 3)
+    def horizontals(threshold = 3)
       Matrix
         .rows(convolve(NArray[*vertical_scan(image)], HORIZONTAL, 0).to_a)
-        .map { |pix| pix < treshold ? nil : pix }
+        .map { |pix| pix < threshold ? nil : pix }
         .to_a
     end
-
-    # def image
-    #   @blurred ||= blur @image
-    # end
 
     # START OF FLIPPER CODE
     def flip_y(coord)
@@ -119,19 +119,19 @@ module Iguvium
         palette.map { |color| ChunkyPNG::Color.grayscale_teint ChunkyPNG::Color.compose(color, 0xffffffff) }
       ).to_h
       NArray[
-          image.pixels.map { |color| dict[color] }
+        image.pixels.map { |color| dict[color] }
       ].reshape(image.width, image.height)
     end
 
-    def minimums_old(ary)
-      ary.each_cons(2)
-         .each_with_index
-         .map { |(a, b), i| [i + 1, a <=> b] }
-         .slice_when { |a, b| a.last != -1 && b.last == -1 }
-         .to_a
-         .map { |seq| seq.reverse.detect do |a| a.last == 1 end&.first }
-         .compact
-    end
+    # def minimums_old(ary)
+    #   ary.each_cons(2)
+    #      .each_with_index
+    #      .map { |(a, b), i| [i + 1, a <=> b] }
+    #      .slice_when { |a, b| a.last != -1 && b.last == -1 }
+    #      .to_a
+    #      .map { |seq| seq.reverse.detect do |a| a.last == 1 end&.first }
+    #      .compact
+    # end
 
     def minimums(ary)
       # This ugly piece of code takes ~200 ms per page scan to run vs ~700 ms for the prettier old one
@@ -140,12 +140,10 @@ module Iguvium
       local = 0
       while i + 2 < ary.length
         local = i + 1 if ary[i] > ary[i + 1]
-        if ary[i] >= ary[i + 1] && ary[i + 1] < ary[i + 2]
-          mins << local if local
-        end
+        mins << local if ary[i] >= ary[i + 1] && ary[i + 1] < ary[i + 2]
         i += 1
       end
-      mins
+      mins.uniq
     end
 
     def edges(vector)

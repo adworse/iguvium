@@ -2,16 +2,18 @@
 
 module Iguvium
   class Page
-    def initialize(page, path)
+    def initialize(page, path, **opts)
+      @opts = opts
       @reader_page = page
       @file = path
     end
 
     attr_reader :lines
 
-    def extract_tables!
+    def extract_tables!(**opts)
       return @tables if @tables
 
+      @opts.merge!(opts) if opts
       recognize!
       @tables
     end
@@ -31,7 +33,7 @@ module Iguvium
     private
 
     def recognize!
-      image = Image.read(@file, @reader_page.number)
+      image = Image.read(@file, @reader_page.number, @opts)
       recognized = CV.new(image).recognize
       @lines = recognized[:lines]
       @boxes = recognized[:boxes].reject { |box| box_empty?(box) }

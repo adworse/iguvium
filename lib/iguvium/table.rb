@@ -11,15 +11,15 @@ module Iguvium
 
     attr_reader :page, :characters, :lines, :box
 
-    def to_a
-      @to_a ||=
+    def to_a(**opts)
+      @opts = opts
         grid[:rows]
         .reverse
         .map { |row| grid[:columns].map { |column| render chars_inside(column, row) } }
     end
 
-    def to_csv
-      to_a.map(&:to_csv).join
+    def to_csv(**opts)
+      to_a(opts).map(&:to_csv).join
     end
 
     private
@@ -56,12 +56,13 @@ module Iguvium
     end
 
     def render(characters)
-      # TODO: add switch to choose between newline and space joining
+      separator = @opts[:newlines] ? "\n" : ' '
       characters
         .sort
         .chunk_while { |a, b| a.mergable?(b) }
         .map { |chunk| chunk.inject(:+).to_s.strip.gsub(/[\s|\p{Z}]+/, ' ') }
-        .join("\n")
+        .join(separator)
+        .gsub(/ +/, ' ')
     end
   end
 end

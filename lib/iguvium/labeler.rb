@@ -71,17 +71,28 @@ module Iguvium
       NEIGHBORS.map { |roffset, coffset|
         r = row + roffset
         c = col + coffset
-        labels.dig(r, c) unless [r, c].min.negative?
+        labels.dig(r, c) unless [r, c].min < 0
       }.compact
+    end
+
+    def neighbors2(row, col)
+      neighbors = []
+      NEIGHBORS.each { |roffset, coffset|
+        r = row + roffset
+        c = col + coffset
+        next if r < 0 || c < 0
+
+        label = labels[r][c]
+        neighbors << label if label
+      }
+      neighbors
     end
 
     def pass_one
       next_label = 0
       image.each_index do |row|
         image[row].each_index do |column|
-          pix = image[row][column]
-          next unless pix
-          next if pix.zero?
+          next unless image[row][column]
 
           neighbors = neighbors row, column
 
@@ -94,8 +105,14 @@ module Iguvium
             neighbors.sort!
             min = neighbors.shift
             @labels[row][column] = min
-            neighbors.each do |neighbor|
-              @equalities[neighbor] = min
+            count = neighbors.length
+            next if count == 0
+            if count == 1
+              @equalities[neighbors[0]] = min
+            elsif count == 2
+              @equalities[neighbors[0]] = @equalities[neighbors[1]] = min
+            else
+              raise ArgumentError, '4 Neighbors?!'
             end
           end
         end
