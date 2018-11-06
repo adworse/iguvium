@@ -11,7 +11,8 @@ Gem::Specification.new do |spec|
   spec.email         = ['dima@scriptangle.com']
 
   spec.summary       = 'Extract tables from PDF as a structured info'
-  # spec.description   = 'TODO: Write a longer description or delete this line.'
+  spec.description   = 'Extract tables from PDF as a structured info. Uses ghostscript to print pdf to image, \
+then recognizes table separators optically. No OpenCV or other heavy dependencies'
   spec.homepage      = 'https://github.com/adworse/iguvium'
   spec.license       = 'MIT'
 
