@@ -23,6 +23,12 @@ end
 
 module Iguvium
   def self.read(path, **opts)
+    if `which gs`.empty?
+      puts "There's no gs utility in your $PATH.
+Please install GhostScript with `brew install ghostscript` on Mac
+or download it here: https://www.ghostscript.com/download/gsdnld.html"
+      exit
+    end
     PDF::Reader.new(path, opts)
                .pages
                .map { |page| Page.new(page, path) }

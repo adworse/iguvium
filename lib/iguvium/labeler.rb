@@ -109,10 +109,13 @@ module Iguvium
             next if count == 0
             if count == 1
               @equalities[neighbors[0]] = min
-            elsif count == 2
-              @equalities[neighbors[0]] = @equalities[neighbors[1]] = min
-            else
-              raise ArgumentError, '4 Neighbors?!'
+            elsif count > 1
+              neighbors.each do |neighbor|
+                @equalities[neighbor] = min
+              end
+            #   @equalities[neighbors[0]] = @equalities[neighbors[1]] = min
+            # else
+            #   raise ArgumentError, '4 Neighbors?!'
             end
           end
         end

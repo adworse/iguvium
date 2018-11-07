@@ -12,7 +12,7 @@ opts = Slop.parse do |o|
     exit
   end
   o.on '-h', '--help', 'show help'do
-    puts o
+    puts o.to_s.gsub(/(usage:).+(iguvium)/, '\1 \2 filename.pdf')
     exit
   end
 end
@@ -32,6 +32,7 @@ puts page_numbers.inspect
 puts opts.to_hash.inspect
 
 page_numbers.each do |number|
+  puts number
   tables = pages[number].extract_tables!(opts)
   tables.each_with_index do |table, i|
     File.write "#{path.gsub(/\.pdf$/, '')}_page_#{number + 1}_table_#{i}.csv", table.to_csv(opts)
