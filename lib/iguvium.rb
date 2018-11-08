@@ -57,9 +57,7 @@ end
 
 # The gem is annoyingly slow. I've succeeded to speed it up at least a couple of times, but we need to go deeper.
 #
-# TODO: 8) Add CLI
-#
-# TODO: 4) Add options like gs executable path, and maybe image thresholding
+# TODO: 4) Add options like maybe image thresholding
 #
 # 5) This will make it version 0.8. Some options, faster than now but still basic
 #
