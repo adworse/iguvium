@@ -100,7 +100,7 @@ module Iguvium
 
     def convolve(narray, conv, border_value = 255)
       narray = border(narray, conv.shape.first / 2, border_value)
-      Convolver.convolve(narray, conv).round
+      Convolver.convolve(narray, conv).ceil
     end
 
     def array_border(array, width, value = 0)

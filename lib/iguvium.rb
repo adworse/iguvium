@@ -7,6 +7,7 @@ require 'logger'
 require 'matrix'
 require 'oily_png'
 require 'pdf-reader'
+require 'rbconfig'
 
 require_relative 'iguvium/labeler'
 require_relative 'iguvium/cv'
@@ -23,15 +24,31 @@ end
 
 module Iguvium
   def self.read(path, **opts)
+    if windows?
+      opts[:gspath] ||= Dir.glob('C:/Program Files/gs/gs*/bin/gswin??c.exe').first
+      puts 'Iguvium is currently not working on Windows.'
+      exit
+    else
+      opts[:gspath] ||= gs?
+    end
+
+    PDF::Reader.new(path, opts)
+               .pages
+               .map { |page| Page.new(page, path, opts) }
+  end
+
+  def self.gs?
     if `which gs`.empty?
       puts "There's no gs utility in your $PATH.
 Please install GhostScript with `brew install ghostscript` on Mac
 or download it here: https://www.ghostscript.com/download/gsdnld.html"
       exit
     end
-    PDF::Reader.new(path, opts)
-               .pages
-               .map { |page| Page.new(page, path) }
+    'gs'
+  end
+
+  def self.windows?
+    RbConfig::CONFIG['host_os'].match?(/mswin|mingw|cygwin/)
   end
 end
 
