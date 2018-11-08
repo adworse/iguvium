@@ -26,10 +26,13 @@ module Iguvium
   def self.read(path, **opts)
     if windows?
       opts[:gspath] ||= Dir.glob('C:/Program Files/gs/gs*/bin/gswin??c.exe').first
-      puts 'Iguvium is currently not working on Windows.'
-      exit
+      if opts[:gspath].empty?
+        puts "There's no gs utility in your $PATH.
+Please install GhostScript: https://www.ghostscript.com/download/gsdnld.html"
+        exit
+      end
     else
-      opts[:gspath] ||= gs?
+      opts[:gspath] ||= gs_nix?
     end
 
     PDF::Reader.new(path, opts)
@@ -37,7 +40,7 @@ module Iguvium
                .map { |page| Page.new(page, path, opts) }
   end
 
-  def self.gs?
+  def self.gs_nix?
     if `which gs`.empty?
       puts "There's no gs utility in your $PATH.
 Please install GhostScript with `brew install ghostscript` on Mac
