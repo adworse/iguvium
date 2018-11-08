@@ -14,7 +14,7 @@ RSpec.describe Iguvium::CV do
 
     it do
       expect(boxes)
-        .to have_attributes(count: 3)
+        .to have_attributes(count: 7)
         .and eql(
           [
             [64..536, 326..427], [70..188, 434..439], [64..536, 476..536], [70..138, 542..547],
