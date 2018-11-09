@@ -37,7 +37,11 @@ module Iguvium
     #
     def read(path, **opts)
       if windows?
-        opts[:gspath] ||= Dir.glob('C:/Program Files/gs/gs*/bin/gswin??c.exe').first
+        unless opts[:gspath]
+          gspath = Dir.glob('C:/Program Files/gs/gs*/bin/gswin??c.exe').first.tr('/', '\\')
+          opts[:gspath] = "\"#{gspath}\""
+        end
+
         if opts[:gspath].empty?
           puts "There's no gs utility in your $PATH.
   Please install GhostScript: https://www.ghostscript.com/download/gsdnld.html"
