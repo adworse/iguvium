@@ -55,6 +55,5 @@ module Iguvium
         box.first.cover?(character.x) && box.last.cover?(character.y)
       }.empty?
     end
-
   end
 end

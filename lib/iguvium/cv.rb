@@ -60,8 +60,11 @@ module Iguvium
     def lines
       @lines ||=
         {
-          vertical: Labeler.new(verticals).lines.map { |line| flip_line line }.sort_by { |x, yrange| [yrange.begin, x] },
-          horizontal: Labeler.new(horizontals).lines.map { |line| flip_line line }.sort_by { |_xrange, y| [y] }
+          vertical: Labeler.new(verticals)
+                           .lines
+                           .map { |line| flip_line line }
+                           .sort_by { |x, yrange| [yrange.begin, x] },
+          horizontal: Labeler.new(horizontals).lines.map { |line| flip_line line }.sort_by { |_, y| [y] }
         }
     end
 

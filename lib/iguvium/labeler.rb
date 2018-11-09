@@ -6,7 +6,7 @@ module Iguvium
 
   private_constant :NEIGHBORS, :FLAT_THRESHOLD
 
-  # Clusterizes connected pixels using two-pass connected component labelling algorithm (Hoshen–Kopelman),
+  # Clusterizes connected pixels using two-pass connected component labelling algorithm (Hoshen-Kopelman),
   # 8-connectivity is used. Line-like groups are then flattened using simplified dispersion ratio
   class Labeler
     # @param image [Array<Boolean>] should be an Array, binarized image
@@ -85,14 +85,14 @@ module Iguvium
 
     def neighbors2(row, col)
       neighbors = []
-      NEIGHBORS.each { |roffset, coffset|
+      NEIGHBORS.each do |roffset, coffset|
         r = row + roffset
         c = col + coffset
         next if r < 0 || c < 0
 
         label = labels[r][c]
         neighbors << label if label
-      }
+      end
       neighbors
     end
 
@@ -115,15 +115,13 @@ module Iguvium
             @labels[row][column] = min
             count = neighbors.length
             next if count == 0
+
             if count == 1
               @equalities[neighbors[0]] = min
             elsif count > 1
               neighbors.each do |neighbor|
                 @equalities[neighbor] = min
               end
-            #   @equalities[neighbors[0]] = @equalities[neighbors[1]] = min
-            # else
-            #   raise ArgumentError, '4 Neighbors?!'
             end
           end
         end
