@@ -4,8 +4,14 @@ module Iguvium
   NEIGHBORS = [[0, -1], [-1, -1], [-1, 0], [-1, 1]].freeze
   FLAT_THRESHOLD = 0.2
 
-  # image should be an integer Array, binarized image w/ 0 (or falsy elements) and anything truthy
+  private_constant :NEIGHBORS, :FLAT_THRESHOLD
+
+  # Clusterizes connected pixels using two-pass connected component labelling algorithm (Hoshen–Kopelman),
+  # 8-connectivity is used. Line-like groups are then flattened using simplified dispersion ratio
   class Labeler
+    # @param image [Array<Boolean>] should be an Array, binarized image
+    #    w/ falsy elements as background and anything truthy as pixels
+    #
     def initialize(image)
       @image = image
       rows = image.count
@@ -14,12 +20,12 @@ module Iguvium
       @equalities = []
     end
 
-    attr_reader :image, :labels
-
+    # @return [Hash] vertical and horizontal lines detected
     def lines
       clusters.map { |cluster| flatten_cluster cluster }.compact
     end
 
+    # @return [Array<Array>] coordinates of connected pixels grouped together
     def clusters
       accumulator = Hash.new { |h, k| h[k] = [] }
       label.each_index do |row|
@@ -34,6 +40,8 @@ module Iguvium
     end
 
     private
+
+    attr_reader :image, :labels
 
     def label
       pass_one

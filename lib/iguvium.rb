@@ -22,7 +22,18 @@ LOGGER.formatter = proc do |severity, datetime, progname, msg|
   "#{severity}: #{msg}\n"
 end
 
+# @author Dima Ermilov <wlaer@wlaer.com>
 module Iguvium
+  # Reads PDF file and prepares it for recognition
+  #
+  # @param path [String] path to PDF file to be read
+  # @option opts [Boolean] :images (false) consider pictures in PDF as possible table separators
+  # @option opts [String] :gspath (nil) explicit path to the GhostScript executable. Use it in case of
+  #   non-standard gs executable placement. If not specified, gem tries standard options
+  #   like C:/Program Files/gs/gs*/bin/gswin??c.exe on Windows or just gs on Mac and Linux
+  # @return [Array <Iguvium::Page>] filterable by page numbers or text. Filtering by {Iguvium::Page#text}
+  #   does not require table parsing and is less expensive.
+  #
   def self.read(path, **opts)
     if windows?
       opts[:gspath] ||= Dir.glob('C:/Program Files/gs/gs*/bin/gswin??c.exe').first
@@ -40,6 +51,8 @@ Please install GhostScript: https://www.ghostscript.com/download/gsdnld.html"
                .map { |page| Page.new(page, path, opts) }
   end
 
+  private
+
   def self.gs_nix?
     if `which gs`.empty?
       puts "There's no gs utility in your $PATH.
@@ -55,11 +68,7 @@ or download it here: https://www.ghostscript.com/download/gsdnld.html"
   end
 end
 
-# The gem is annoyingly slow. I've succeeded to speed it up at least a couple of times, but we need to go deeper.
-#
 # TODO: 4) Add options like maybe image thresholding
-#
-# 5) This will make it version 0.8. Some options, faster than now but still basic
 #
 # TODO: 6) 0.9 - version capable of reading tables with open outer cells, like this:
 # __|____|_______|_____|

@@ -2,38 +2,60 @@
 
 module Iguvium
   GAUSS = NArray[
-    [0.0125786, 0.0251572, 0.0314465, 0.0251572, 0.0125786],
-    [0.0251572, 0.0566038, 0.0754717, 0.0566038, 0.0251572],
-    [0.0314465, 0.0754717, 0.0943396, 0.0754717, 0.0314465],
-    [0.0251572, 0.0566038, 0.0754717, 0.0566038, 0.0251572],
-    [0.0125786, 0.0251572, 0.0314465, 0.0251572, 0.0125786]
+      [0.0125786, 0.0251572, 0.0314465, 0.0251572, 0.0125786],
+      [0.0251572, 0.0566038, 0.0754717, 0.0566038, 0.0251572],
+      [0.0314465, 0.0754717, 0.0943396, 0.0754717, 0.0314465],
+      [0.0251572, 0.0566038, 0.0754717, 0.0566038, 0.0251572],
+      [0.0125786, 0.0251572, 0.0314465, 0.0251572, 0.0125786]
   ]
 
   HORIZONTAL = NArray[
-    [-1, -1, -1],
-    [2, 2, 2],
-    [-1, -1, -1]
+      [-1, -1, -1],
+      [2, 2, 2],
+      [-1, -1, -1]
   ]
 
   VERTICAL = NArray[
-    [-1, 2, -1],
-    [-1, 2, -1],
-    [-1, 2, -1]
+      [-1, 2, -1],
+      [-1, 2, -1],
+      [-1, 2, -1]
   ]
 
+  private_constant :GAUSS, :HORIZONTAL, :VERTICAL
+
+  # Performs all the computer vision job except table composition.
+  # Edge detection is performed using simplified two-directional version of
+  # Canny edge detection operator applied to rows and columns as integer vectors
   class CV
+    # @!attribute lines
+    #   @return [Hash] :vertical and :horizontal lines. Horizontal lines are [Array<Range, Integer>],
+    #     vertical have [Integer] on x position
+    # @!attribute boxes
+    #   @return [Array<Range, Range>] X range, Y range
+
+    # Keeps recognized data
+    Recognized = Struct.new(:lines, :boxes)
+
+    # Prepares image for recognition: initial blur
+    # @param image [ChunkyPNG::Image] from {Iguvium::Image.read}
     def initialize(image)
       @image = blur image
     end
 
+    # @return [Array] 8-bit representation of an image
     attr_reader :image
 
+    # @return [Recognized]
+    #   lines most probably forming table cells and tables' outer borders as boxes
     def recognize
-      {
-        lines: lines,
-        boxes: boxes
-      }
+      Recognized.new(lines, boxes)
+      # {
+      #   lines: lines,
+      #   boxes: boxes
+      # }
     end
+
+    private
 
     def lines
       @lines ||=
@@ -52,8 +74,6 @@ module Iguvium
         image.map { |row| row.map { |pix| pix < brightest } }
       ).clusters.map { |cluster| box cluster }.sort_by { |xrange, yrange| [yrange.begin, xrange.begin] }
     end
-
-    private
 
     def verticals(threshold = 3)
       Matrix

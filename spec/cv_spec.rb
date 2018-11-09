@@ -9,8 +9,8 @@ RSpec.describe Iguvium::CV do
     let(:path) { 'spec/files/auction.pdf' }
     let(:page_index) { 0 }
 
-    let(:lines) { cv.lines }
-    let(:boxes) { cv.boxes }
+    let(:lines) { cv.recognize[:lines]}
+    let(:boxes) { cv.recognize[:boxes]}
 
     it do
       expect(boxes)
@@ -51,8 +51,8 @@ RSpec.describe Iguvium::CV do
     let(:path) { 'spec/files/quote.pdf' }
     let(:page_index) { 0 }
 
-    let(:lines) { cv.lines }
-    let(:boxes) { cv.boxes }
+    let(:lines) { cv.recognize[:lines]}
+    let(:boxes) { cv.recognize[:boxes]}
 
     it do
       expect(boxes)

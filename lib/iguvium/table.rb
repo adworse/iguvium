@@ -1,28 +1,45 @@
 # frozen_string_literal: true
 
 module Iguvium
+  # Dataset for the table and rules for it to render
   class Table
+    # @param box [Array<Range, Range>] table outer borders
+    # @param page [Iguvium::Page] entire page current table belongs to
     def initialize(box, page)
       @box = box
       @lines = page.lines
-      @characters = page.characters
       @page = page
     end
 
-    attr_reader :page, :characters, :lines, :box
+    attr_reader :page, :lines, :box
 
+    # @option opts [Boolean] :newlines (false) keep newlines inside table cells
     def to_a(**opts)
       @opts = opts
-        grid[:rows]
+      grid[:rows]
         .reverse
         .map { |row| grid[:columns].map { |column| render chars_inside(column, row) } }
     end
 
+    # @option (see #to_a)
     def to_csv(**opts)
       to_a(opts).map(&:to_csv).join
     end
 
     private
+
+    def enhancer(grid)
+      # @todo write grid enhancer to detect cells between outer grid lines and box borders
+    end
+
+    def characters
+      xrange = box.first
+      yrange = box.last
+      @characters ||=
+        page
+        .characters
+        .select { |character| xrange.cover?(character.x) && yrange.cover?(character.y) }
+    end
 
     def grid
       @grid ||=

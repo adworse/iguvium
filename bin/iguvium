@@ -1,21 +1,22 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
-require "iguvium"
+require 'iguvium'
 require 'slop'
 
-opts = Slop.parse do |o|
-  o.array '-p', '--pages', 'page numbers'
-  o.bool '-i', '--images', 'Use pictures in pdf (usually a bad idea)'
+opts = Slop.parse { |o|
+  o.array '-p', '--pages', 'page numbers, comma-separated, no spaces'
+  o.bool '-i', '--images', 'use pictures in pdf (usually a bad idea)'
   o.bool '-n', '--newlines', 'keep newlines'
   o.on '--version', 'print the version' do
     puts Iguvium::VERSION
     exit
   end
-  o.on '-h', '--help', 'show help'do
+  o.on '-h', '--help', 'show help' do
     puts o.to_s.gsub(/(usage:).+(iguvium)/, '\1 \2 filename.pdf')
     exit
   end
-end
+}
 
 path = opts.args.first
 
@@ -28,16 +29,16 @@ pages = Iguvium.read(path, opts)
 
 page_numbers = pages.count.times.to_a if page_numbers.empty?
 
-puts page_numbers.inspect
-puts opts.to_hash.inspect
+# puts page_numbers.inspect
+# puts opts.to_hash.inspect
 
 page_numbers.each do |number|
-  puts number
+  puts "page #{number + 1}"
   tables = pages[number].extract_tables!(opts)
   tables.each_with_index do |table, i|
-    File.write "#{path.gsub(/\.pdf$/, '')}_page_#{number + 1}_table_#{i}.csv", table.to_csv(opts)
+    csv = table.to_csv(opts)
+    next if csv.empty?
+
+    File.write "#{path.gsub(/\.pdf$/, '')}_page_#{number + 1}_table_#{i}.csv", csv
   end
 end
-
-
-

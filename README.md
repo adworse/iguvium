@@ -67,6 +67,19 @@ tables = pages[6].extract_tables!
 tables.first.to_a
 ```
 
+##CLI
+
+Gem installation adds a command-line utility to the system. It's a simple wrapper:
+
+```
+iguvium filename.pdf [options]
+    -p, --pages     page numbers, comma-separated, no spaces
+    -i, --images    use pictures in pdf (usually a bad idea)
+    -n, --newlines  keep newlines
+```
+
+Given filename it generates CSV files fir the tables detected 
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/adworse/iguvium.
