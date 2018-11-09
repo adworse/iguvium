@@ -33,12 +33,15 @@ page_numbers = pages.count.times.to_a if page_numbers.empty?
 # puts opts.to_hash.inspect
 
 page_numbers.each do |number|
-  puts "page #{number + 1}"
+  print "Extracting page #{number + 1}... "
   tables = pages[number].extract_tables!(opts)
+  tables.empty? ? puts('no tables found') : puts
+
   tables.each_with_index do |table, i|
     csv = table.to_csv(opts)
     next if csv.empty?
-
-    File.write "#{path.gsub(/\.pdf$/, '')}_page_#{number + 1}_table_#{i}.csv", csv
+    csv_file = "#{path.gsub(/\.pdf$/, '')}_page_#{number + 1}_table_#{i}.csv"
+    puts "Saving #{File.expand_path(csv_file, __dir__)}"
+    File.write csv_file, csv
   end
 end

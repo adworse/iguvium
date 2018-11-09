@@ -57,6 +57,11 @@ RSpec.describe Iguvium::CV do
   context 'quote' do
     let(:path) { 'spec/files/quote.pdf' }
     let(:page_index) { 0 }
+    let(:gspath) do
+      return 'gs' unless RbConfig::CONFIG['host_os'].match?(/mswin|mingw|cygwin/)
+      gspath = Dir.glob('C:/Program Files/gs/gs*/bin/gswin??c.exe').first.tr('/', '\\')
+      "\"#{gspath}\""
+    end
 
     let(:lines) { cv.recognize[:lines]}
     let(:boxes) { cv.recognize[:boxes]}
