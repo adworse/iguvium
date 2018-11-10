@@ -65,7 +65,7 @@ module Iguvium
       elsif ys.uniq.count / ys.count.to_f < FLAT_THRESHOLD
         [xs.min..xs.max, ys.max_by { |i| ys.count i }]
       else
-        LOGGER.warn "NonFlattable, #{cluster.inspect}"
+        Iguvium.logger.warn "NonFlattable, #{cluster.inspect}"
         nil
       end
     end

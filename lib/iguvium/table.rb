@@ -11,9 +11,13 @@ module Iguvium
       @page = page
     end
 
-    attr_reader :page, :lines, :box
-
+    # After the table is extracted, you may render it to an array of strings.
+    # Newlines in PDF have usually no semantic value, and are replaced with spaces by default.
+    # Sometimes you need to keep them; in this case use `newlines: true` option.
+    #
     # @option opts [Boolean] :newlines (false) keep newlines inside table cells
+    # @return [Array] 2D array of strings (content of table's cells)
+    #
     def to_a(**opts)
       @opts = opts
       grid[:rows]
@@ -22,11 +26,14 @@ module Iguvium
     end
 
     # @option (see #to_a)
+    # @return [String] CSV
     def to_csv(**opts)
       to_a(opts).map(&:to_csv).join
     end
 
     private
+
+    attr_reader :page, :lines, :box
 
     def enhancer(grid)
       # @todo write grid enhancer to detect cells between outer grid lines and box borders
