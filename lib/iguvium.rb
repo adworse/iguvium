@@ -96,7 +96,7 @@ module Iguvium
     end
 
     def windows?
-      RbConfig::CONFIG['host_os'].match?(/mswin|mingw|cygwin/)
+      RbConfig::CONFIG['host_os'].match(/mswin|mingw|cygwin/)
     end
   end
 end
