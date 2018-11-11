@@ -60,11 +60,15 @@ Or install it yourself as:
 
 ## Usage
 
-```require 'iguvium'
-pages = Iguvium.read 'file.pdf'
-pages.count
-tables = pages[6].extract_tables!
-tables.first.to_a
+####Get all the tables in 2D text array format
+```pages = Iguvium.read('filename.pdf') #=> [Array<Iguvium::Page>]
+tables = pages.flat_map { |page| page.extract_tables! } #=> [Array<Iguvium::Table>]
+tables.map(&:to_a)
+```
+####Get first table from the page 8
+```pages = Iguvium.read('filename.pdf')
+tables = pages[7].extract_tables!
+tables.first.to_csv #=> CSV [String]
 ```
 
 ##CLI
