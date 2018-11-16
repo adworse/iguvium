@@ -9,6 +9,7 @@ opts = Slop.parse { |o|
   o.array '-p', '--pages', 'page numbers, comma-separated, no spaces'
   o.bool '-i', '--images', 'use pictures in pdf (usually a bad idea)'
   o.bool '-n', '--newlines', 'keep newlines'
+  o.bool '--verbose', 'verbose output'
   o.on '--version', 'print the version' do
     puts Iguvium::VERSION
     exit
@@ -21,12 +22,14 @@ opts = Slop.parse { |o|
 
 path = opts.args.first
 
-abort('No file name') unless path
+abort('No file name given') unless path
 
 opts = opts.to_hash
 page_numbers = opts.delete(:pages).map { |number| number.to_i - 1 }
 
 pages = Iguvium.read(path, opts)
+
+Iguvium.logger.level = Logger::INFO if opts[:verbose]
 
 page_numbers = pages.count.times.to_a if page_numbers.empty?
 
@@ -35,11 +38,11 @@ page_numbers = pages.count.times.to_a if page_numbers.empty?
 
 page_numbers.each do |number|
   print "Extracting page #{number + 1}... "
-  tables = pages[number].extract_tables!(opts)
+  tables = pages[number].extract_tables!(images: opts[:images])
   tables.empty? ? puts('no tables found') : puts
 
   tables.each_with_index do |table, i|
-    csv = table.to_a(opts).map(&:to_csv).join
+    csv = table.to_a(newlines: opts[:newlines]).map(&:to_csv).join
     next if csv.empty?
     csv_file = "#{path.gsub(/\.pdf$/, '')}_page_#{number + 1}_table_#{i}.csv"
     puts "Saving #{File.expand_path(csv_file, __dir__)}"
