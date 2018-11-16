@@ -1,34 +1,35 @@
 # frozen_string_literal: true
 
 module Iguvium
-  # Dataset for the table and rules for it to render
+  # Represents single table from the [Iguvium::Page]:
+  # * table outer borders aka box,
+  # * set of detected horizontal and vertical lines to form table's grid,
+  # * set of characters with its coordinates to fill the grid.
+  #
+  # Additional functionality like an option to detect an open table grid at the end or at the beginning
+  # of the page will be added later
+  #
+  # To render table into 2D text array, call {#to_a}
   class Table
-    # @param box [Array<Range, Range>] table outer borders
-    # @param page [Iguvium::Page] entire page current table belongs to
+    # @api private
     def initialize(box, page)
       @box = box
       @lines = page.lines
       @page = page
     end
 
-    # After the table is extracted, you may render it to an array of strings.
-    # Newlines in PDF have usually no semantic value, and are replaced with spaces by default.
-    # Sometimes you need to keep them; in this case use `newlines: true` option.
+    # Renders the table into an array of strings.
     #
-    # @option opts [Boolean] :newlines (false) keep newlines inside table cells
+    # Newlines in PDF have usually no semantic value, and are replaced with spaces by default.
+    # Sometimes you may need to keep them; in this case use `newlines: true` option.
+    #
+    # @param  [Boolean] newlines keep newlines inside table cells, false by default
     # @return [Array] 2D array of strings (content of table's cells)
     #
-    def to_a(**opts)
-      @opts = opts
+    def to_a(newlines: false)
       grid[:rows]
         .reverse
-        .map { |row| grid[:columns].map { |column| render chars_inside(column, row) } }
-    end
-
-    # @option (see #to_a)
-    # @return [String] CSV
-    def to_csv(**opts)
-      to_a(opts).map(&:to_csv).join
+        .map { |row| grid[:columns].map { |column| render(chars_inside(column, row), newlines: newlines) } }
     end
 
     private
@@ -79,8 +80,8 @@ module Iguvium
       }
     end
 
-    def render(characters)
-      separator = @opts[:newlines] ? "\n" : ' '
+    def render(characters, newlines: false)
+      separator = newlines ? "\n" : ' '
       characters
         .sort
         .chunk_while { |a, b| a.mergable?(b) }

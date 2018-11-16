@@ -2,50 +2,62 @@
 
 module Iguvium
 
-  # It's document page. To extract tables, use {Iguvium::Page#extract_tables!}. {PDF::Reader::Page} inside
-  # {Iguvium::Page} object provides {Iguvium::Page#text} method. It takes ~150 ms for it to work, so it's handy
-  # for picking up pages before trying to extract tables, which is an expensive operation
+  # It's document page, you can extract tables from here. to do so, use {Iguvium::Page#extract_tables!}.
+  #
+  # {Iguvium::Page#text} method is handy in order to pre-analyze whether you need this page.
+  #
   # @example
   #   pages = Iguvium.read('nixon.pdf', gspath: '/usr/bin/gs')
   #   pages = pages.select { |page| page.text.match?(/[Tt]able.+\d+/) }
+  #   tables = pages.map(&:extract_tables!)
   class Page
     # @param page [PDF::Reader::Page]
     # @param (see Iguvium.read)
-    # @option (see Iguvium.read)
+    # Typically you don't need it, prefer {Page} creation from {Iguvium.read}
     def initialize(page, path, **opts)
       @opts = opts
       @reader_page = page
       @path = path
     end
 
+    # @!visibility private
     # @return (see Iguvium::CV#lines)
     attr_reader :lines
 
-    # This method does all the heavy lifting. On some older CPUs it takes up to 2 seconds per page for it to work
-    # (up to 1 second on more modern ones), so use it with caution. It returns an array of {Iguvium::Table}
+    # This method does all the heavy lifting which include optical recognition of table borders.
+    # It returns an array of {Iguvium::Table}
     # or an empty array if it fails to recognize any. To get structured data from parsed {Iguvium::Table},
-    # just call {Iguvium::Table#to_a} or {Iguvium::Table#to_csv}. It's possible to explicitely overwrite
-    # global :images option.
+    # just call {Iguvium::Table#to_a}.
+    #
     # @todo Further speed improvements should be done, expecting at least 30% speedup on multicore systems
-    # @note Due to the nature of PDF document which is generally a collection of independent pages,
+    #
+    # Due to the nature of PDF document which is generally a collection of independent pages,
     # {Iguvium::Page#extract_tables!} is suitable for parallel processing. Concurrent processing
-    # (think fork vs. thread) on the other hand would be not a great idea, because it's a CPU-intensive task.
+    # (think fork as parallel vs. thread as concurrent) on the other hand would be not a great idea,
+    # because it's a CPU-intensive task.
+    #
+    # On some older CPUs it takes up to 2 seconds per page for it to work
+    # (up to 1 second on more modern ones), so use it wisely.
+    #
     # @example extract tables using pictures as possible borders
     #   tables = page.extract_tables! images: true #=> [Array<Iguvium::Table>]
     # @return [Array<Iguvium::Table>]
-    def extract_tables!(**opts)
+    def extract_tables!(images: @opts[:images])
       return @tables if @tables
 
-      @opts.merge!(opts) if opts
+      @opts[:images] = images
       recognize!
       @tables
     end
 
-    # @return [String] rendered page text, result of underlying PDF::Reader#text call
+    # @return [String] rendered page text, result of underlying PDF::Reader::Page#text call
+    # It takes ~150 ms for it to work, so it's handy
+    # for picking up pages before trying to extract tables, which is an expensive operation
     def text
       @text ||= @reader_page.text
     end
 
+    # @!visibility private
     # @return [Array<PDF::Reader::TextRun>] array of characters on page. Each character has its coordinates,
     #   size, and width
     def characters

@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+require 'csv'
 require 'iguvium'
 require 'slop'
 
@@ -38,7 +39,7 @@ page_numbers.each do |number|
   tables.empty? ? puts('no tables found') : puts
 
   tables.each_with_index do |table, i|
-    csv = table.to_csv(opts)
+    csv = table.to_a(opts).map(&:to_csv).join
     next if csv.empty?
     csv_file = "#{path.gsub(/\.pdf$/, '')}_page_#{number + 1}_table_#{i}.csv"
     puts "Saving #{File.expand_path(csv_file, __dir__)}"

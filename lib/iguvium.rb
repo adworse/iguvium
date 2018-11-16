@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'convolver-light'
-require 'csv'
 require 'fileutils'
 require 'logger'
 require 'matrix'
@@ -24,26 +23,28 @@ require_relative 'iguvium/version'
 # @example Get first table from the page 8
 #   pages = Iguvium.read('filename.pdf')
 #   tables = pages[7].extract_tables!
-#   tables.first.to_csv #=> CSV [String]
+#   tables.first.to_a
 # For more details please look {Iguvium.read} and {Iguvium::Page#extract_tables!}
 # @author Dima Ermilov <wlaer@wlaer.com>
 #
 module Iguvium
   class << self
     # It's main method. Usually this is where you start.
-    # It returns an array of {Iguvium::Page}. Those pages are yet unparsed, all the heavy lifting is done
-    # in {Iguvium::Page#extract_tables!} method.
+    #
+    # It returns an array of {Iguvium::Page}.
+    #
+    # Tables on those pages are neither extracted nor detected yet,
+    # all the heavy lifting is done in {Iguvium::Page#extract_tables!} method.
     #
     # @param path [String] path to PDF file to be read
-    # @option opts [Boolean] :images (false) consider pictures in PDF as possible table separators
     # @option opts [String] :gspath (nil) explicit path to the GhostScript executable. Use it in case of
     #   non-standard gs executable placement. If not specified, gem tries standard options
     #   like `C:\\Program Files\\gs\\gs*\\bin\\gswin??c.exe` on Windows or just `gs` on Mac and Linux
     # @option opts [Logger::Level] :loglevel level like Logger::INFO, default is Logger::ERROR
     # @return [Array <Iguvium::Page>]
     #
-    # @example prepare pages, consider images meaningful, be more verbose in logging
-    #   pages = Iguvium.read('filename.pdf', images: true, loglevel: Logger::WARN)
+    # @example prepare pages, consider images meaningful
+    #   pages = Iguvium.read('filename.pdf', images: true)
     #
     # @example set nonstandard gs path, get pages starting with the one which contains keyword
     #   pages = Iguvium.read('nixon.pdf', gspath: '/usr/bin/gs')
@@ -51,8 +52,11 @@ module Iguvium
     #   # {Iguvium::Page#text} does not require optical page scan and thus is relatively cheap.
     #   # It uses an underlying PDF::Reader::Page#text which is fast but not completely free though.
     #
+    # @option opts [Boolean] :images (false) consider pictures in PDF as possible table separators.
+    # This typically makes sense in a rare case when table grid in your pdf is filled with
+    # rasterized texture or is actually a background picture. Usually you don't want to use it.
+    #
     def read(path, **opts)
-      logger.level = opts[:loglevel] || Logger::ERROR
       if windows?
         unless opts[:gspath]
           gspath = Dir.glob('C:/Program Files/gs/gs*/bin/gswin??c.exe').first.tr('/', '\\')
@@ -71,6 +75,14 @@ module Iguvium
       PDF::Reader.new(path, opts).pages.map { |page| Page.new(page, path, opts) }
     end
 
+    # Creates and gives access to Ruby Logger. Default [Logger::Level] is Logger::ERROR.
+    #
+    # To set another level call `Iguvium.logger.level = Logger::INFO` or some other standard logger level
+    #
+    #
+    # It is possible to redefine Iguvium's logger, for example to replace it with a global one like
+    # `Iguvium.logger = Rails.logger`
+    # @return [Logger]
     def logger
       return @logger if @logger
 
@@ -78,10 +90,12 @@ module Iguvium
       @logger.formatter = proc do |severity, _, _, msg|
         "#{severity}: #{msg}\n"
       end
+      @logger.level = Logger::ERROR
       @logger
     end
-
-    attr_writer :logger
+    def logger=(new_logger)
+      @logger = new_logger
+    end
 
     private
 
