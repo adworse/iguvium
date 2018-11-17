@@ -96,8 +96,7 @@ and some fancy lines. Human eye interprets this as a table. Iguvium behaves quit
 
 Long enough continuous edges are interpreted as possible cell borders. Gaussian blur is applied beforehand to get rid of possible inconsistencies and style features.
 
-Image recognition is written in Ruby, no OpenCV or other heavy computer vision libraries are used.
-
+Initially inspired by [camelot](https://github.com/socialcopsdev/camelot/) idea of image analysis to detect table structure. Besides this idea, is an independent work. Image recognition is written in Ruby, no OpenCV or other heavy computer vision libraries are used. Line detection algorithms are different too. The functionality of Camelot is significantly broader.
 
 ## Roadmap
 
