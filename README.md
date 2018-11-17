@@ -1,20 +1,30 @@
 # Iguvium
 [![Build Status](https://travis-ci.com/adworse/iguvium.svg?token=pKH4s9rC7sLLfFxdq8b6&branch=master)](https://travis-ci.com/adworse/iguvium)
 
-This gem extracts tables from PDF files. That's it. 
+Iguvium extracts tables from PDF file in a structured form. It works like this.
 
-There are usually no actual tables in PDFs, only characters with coordinates,
- and some fancy lines. Human eye interprets this as a table. Iguvium behaves quite similarly:
- it looks for table-like graphic structure and tries to place characters into detected cells.
- 
- Image recognition is written in Ruby, no OpenCV or other heavy computer vision libraries are used.
- 
- Characters extraction is done by [PDF::Reader gem](https://github.com/yob/pdf-reader). Some PDFs are so insane it can't extract meaningful text from them. If so, so does Iguvium.
+Take this PDF file:
 
-## Roadmap
+![PDF Table](https://user-images.githubusercontent.com/8277078/48663021-ba81e580-ea92-11e8-8ca6-53c5cd5c7b1b.png)
 
-Current version extracts regular (with constant number of rows per column and vise versa) tables
-with explicit lines formatting, like this:
+Use this code:
+
+```
+pages = Iguvium.read('filename.pdf')
+tables = pages[1].extract_tables!
+csv = tables.first.to_a.map(&:to_csv).join 
+```
+
+Get this table:
+
+![Spreadsheet](https://user-images.githubusercontent.com/8277078/48663073-822ed700-ea93-11e8-8924-9974ab5da27b.png)
+
+##Features/Limitations: 
+* Iguvium renders pdf into an image, looks for table-like graphic structure and tries to place characters into detected cells.
+
+* Characters extraction is done by [PDF::Reader gem](https://github.com/yob/pdf-reader). Some PDFs are so messed up it can't extract meaningful text from them. If so, so does Iguvium.
+
+* Current version extracts regular (with constant number of rows per column and vise versa) tables with explicit lines formatting, like this:
 
 ```
 .__________________.
@@ -22,18 +32,11 @@ with explicit lines formatting, like this:
 |____|_______|_____|
 |____|_______|_____|
 ```
+  Merged cells content is split as if cells were not merged.
 
-The next one will deal with open-edged tables like
+* Performance: considering the fact it has computer vision under the hood, the gem is reasonably fast. Full page extraction takes up to 1 second on modern CPUs and up to 2 seconds on the older ones.
 
-```
-__|____|_______|_____|
-__|____|_______|_____|
-__|____|_______|_____|
-```
 
-The final one will recognize tables with merged cells.
-
-There are at the moment no plans to design recognition of whitespace-separated tables.
 ## Installation
 
 Make sure you have Ghostscript installed. 
@@ -52,7 +55,7 @@ gem 'iguvium'
 
 And then execute:
 
-    $ bundle
+    $ bundle install
 
 Or install it yourself as:
 
@@ -61,14 +64,16 @@ Or install it yourself as:
 ## Usage
 
 ####Get all the tables in 2D text array format
-```pages = Iguvium.read('filename.pdf') #=> [Array<Iguvium::Page>]
+```
+pages = Iguvium.read('filename.pdf') #=> [Array<Iguvium::Page>]
 tables = pages.flat_map { |page| page.extract_tables! } #=> [Array<Iguvium::Table>]
 tables.map(&:to_a)
 ```
 ####Get first table from the page 8
-```pages = Iguvium.read('filename.pdf')
+```
+pages = Iguvium.read('filename.pdf')
 tables = pages[7].extract_tables!
-tables.first.to_csv #=> CSV [String]
+tables.first.to_a
 ```
 
 ##CLI
@@ -80,13 +85,35 @@ iguvium filename.pdf [options]
     -p, --pages     page numbers, comma-separated, no spaces
     -i, --images    use pictures in pdf (usually a bad idea)
     -n, --newlines  keep newlines
+    --verbose       verbose output
 ```
 
-Given filename it generates CSV files fir the tables detected 
+Given a filename, it generates CSV files for the tables detected 
 
-## Contributing
+##Implementation details
+There are usually no actual tables in PDFs, only characters with coordinates,
+and some fancy lines. Human eye interprets this as a table. Iguvium behaves quite similarly. It prints PDF to an image file with GhostScript, then analyses the image.
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/adworse/iguvium.
+Long enough continuous edges are interpreted as possible cell borders. Gaussian blur is applied beforehand to get rid of possible inconsistencies and style features.
+
+Image recognition is written in Ruby, no OpenCV or other heavy computer vision libraries are used.
+
+
+## Roadmap
+
+The next version will deal with open-edged tables like
+
+```
+__|____|_______|_____|
+__|____|_______|_____|
+__|____|_______|_____|
+```
+
+It also will keep open-edged rows metadata ('floorless' and 'roofless') for the needs of multipage tables merger.
+
+The final one will recognize tables with merged cells.
+
+There are at the moment no plans to design recognition of whitespace-separated tables.
 
 ## License
 
