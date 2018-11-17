@@ -19,7 +19,7 @@ Get this table:
 
 ![Spreadsheet](https://user-images.githubusercontent.com/8277078/48663073-822ed700-ea93-11e8-8924-9974ab5da27b.png)
 
-##Features/Limitations: 
+## Features/Limitations: 
 * Iguvium renders pdf into an image, looks for table-like graphic structure and tries to place characters into detected cells.
 
 * Characters extraction is done by [PDF::Reader gem](https://github.com/yob/pdf-reader). Some PDFs are so messed up it can't extract meaningful text from them. If so, so does Iguvium.
@@ -63,20 +63,20 @@ Or install it yourself as:
 
 ## Usage
 
-####Get all the tables in 2D text array format
+#### Get all the tables in 2D text array format
 ```
 pages = Iguvium.read('filename.pdf') #=> [Array<Iguvium::Page>]
 tables = pages.flat_map { |page| page.extract_tables! } #=> [Array<Iguvium::Table>]
 tables.map(&:to_a)
 ```
-####Get first table from the page 8
+#### Get first table from the page 8
 ```
 pages = Iguvium.read('filename.pdf')
 tables = pages[7].extract_tables!
 tables.first.to_a
 ```
 
-##CLI
+## CLI
 
 Gem installation adds a command-line utility to the system. It's a simple wrapper:
 
@@ -90,7 +90,7 @@ iguvium filename.pdf [options]
 
 Given a filename, it generates CSV files for the tables detected 
 
-##Implementation details
+## Implementation details
 There are usually no actual tables in PDFs, only characters with coordinates,
 and some fancy lines. Human eye interprets this as a table. Iguvium behaves quite similarly. It prints PDF to an image file with GhostScript, then analyses the image.
 
