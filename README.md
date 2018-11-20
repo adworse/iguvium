@@ -89,10 +89,12 @@ iguvium filename.pdf [options]
     -p, --pages     page numbers, comma-separated, no spaces
     -i, --images    use pictures in pdf (usually a bad idea)
     -n, --newlines  keep newlines
+    -t, --text      extract full page text instead of tables
     --verbose       verbose output
 ```
 
-Given a filename, it generates CSV files for the tables detected 
+Given a filename, it generates CSV files for the tables detected or, with `-t` option, 
+just page text. The latter is useful in case of whitespace-separated fixed-width tables.  
 
 ## Implementation details
 There are usually no actual tables in PDFs, only characters with coordinates,
