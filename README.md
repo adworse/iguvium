@@ -60,6 +60,10 @@ And then execute:
 Or install it yourself as:
 
     $ gem install iguvium
+    
+If you're not a developer and have a Mac, you maybe have default Ruby installation and no development tools installed.
+
+In this case, run `xcode-select --install` beforehand, and after that install Iguvium as admin: `sudo gem install iguvium` 
 
 ## Usage
 
