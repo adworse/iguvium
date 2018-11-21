@@ -7,6 +7,7 @@ require 'matrix'
 require 'oily_png'
 require 'pdf-reader'
 require 'rbconfig'
+require 'shellwords'
 
 require_relative 'iguvium/labeler'
 require_relative 'iguvium/cv'

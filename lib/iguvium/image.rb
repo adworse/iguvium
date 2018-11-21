@@ -15,10 +15,11 @@ module Iguvium
     #
     # @return [ChunkyPNG::Image]
     def self.read(path, pagenumber = 1, **opts)
+      puts path.shellescape
       rgb = path.gsub(/\.pdf$/, '.rgb')
       Iguvium.logger.info `#{opts[:gspath]} -dSAFER -dBATCH -dNOPAUSE -sDEVICE=pnggray -dGraphicsAlphaBits=4 \
     -r72 -dFirstPage=#{pagenumber} -dLastPage=#{pagenumber} \
-    -dFILTERTEXT #{'-dFILTERIMAGE' unless opts[:images]} -sOutputFile=#{rgb} #{path} 2>&1`
+    -dFILTERTEXT #{'-dFILTERIMAGE' unless opts[:images]} -sOutputFile=#{rgb.shellescape} #{path.shellescape} 2>&1`
 
       image = ChunkyPNG::Image.from_file(rgb)
       File.delete rgb
