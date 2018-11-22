@@ -24,12 +24,22 @@ module Iguvium
     # Sometimes you may need to keep them; in this case use `newlines: true` option.
     #
     # @param  [Boolean] newlines keep newlines inside table cells, false by default
+    # @param  [Boolean] phrases keep phrases unsplit, false by default.
+    #   Poor man's merged cells workaround. Could break some tables, could fix some.
+    #
     # @return [Array] 2D array of strings (content of table's cells)
     #
-    def to_a(newlines: false)
+    def to_a(newlines: false, phrases: false)
       grid[:rows]
         .reverse
-        .map { |row| grid[:columns].map { |column| render(chars_inside(column, row), newlines: newlines) } }
+        .map { |row|
+        grid[:columns].map do |column|
+          render(
+            phrases ? words_inside(column, row) : chars_inside(column, row),
+            newlines: newlines
+          )
+        end
+      }
     end
 
     private
@@ -47,6 +57,20 @@ module Iguvium
         page
         .characters
         .select { |character| xrange.cover?(character.x) && yrange.cover?(character.y) }
+    end
+
+    def words
+      @words ||=
+        characters
+        .sort
+        .chunk_while { |a, b| a.mergable?(b) }
+        .map { |chunk| chunk.inject(:+) }
+    end
+
+    def words_inside(xrange, yrange)
+      words.select { |character|
+        xrange.cover?(character.x) && yrange.cover?(character.y)
+      }
     end
 
     def grid

@@ -89,6 +89,7 @@ iguvium filename.pdf [options]
     -p, --pages     page numbers, comma-separated, no spaces
     -i, --images    use pictures in pdf (usually a bad idea)
     -n, --newlines  keep newlines
+    --phrases       keep phrases unsplit, could fix some merged cells
     -t, --text      extract full page text instead of tables
     --verbose       verbose output
 ```
