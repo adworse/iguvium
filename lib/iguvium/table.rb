@@ -24,12 +24,12 @@ module Iguvium
     # Sometimes you may need to keep them; in this case use `newlines: true` option.
     #
     # @param  [Boolean] newlines keep newlines inside table cells, false by default
-    # @param  [Boolean] phrases keep phrases unsplit, false by default.
-    #   Poor man's merged cells workaround. Could break some tables, could fix some.
+    # @param  [Boolean] phrases keep phrases unsplit, true by default.
+    #   Poor man's merged cells workaround. Could break some tables , could fix some.
     #
     # @return [Array] 2D array of strings (content of table's cells)
     #
-    def to_a(newlines: false, phrases: false)
+    def to_a(newlines: false, phrases: true)
       grid[:rows]
         .reverse
         .map { |row|
