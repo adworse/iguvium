@@ -118,7 +118,7 @@ RSpec.describe Iguvium::Table do
     let(:table_index) { 0 }
 
     it {
-      expect(table.to_a(newlines: true, phrases: false)).to eql(
+      expect(table.heal.to_a(newlines: true, phrases: false)).to eql(
         [
           ['Product Code', 'Product', 'List Price', 'Disc %', 'Sale Price', 'Quantity', 'Amount'],
           ['LKHDKJHKiuewiudk', "lihjeoriuh ISLKJHFKLJ -\nsljhkl kljdsfkjlksl;dkj", '$65842.40', '57.00', '$32554.86', '2.00', '$84864.32'],
@@ -133,7 +133,8 @@ RSpec.describe Iguvium::Table do
           ['W-FVJ-ATF-A-S-DP', "11ZbV Tvbv ZJY+ Sliwomh\nWxoookn", '', '32.10', '', '1.00', ''],
           ['H-VPO-HUZC-ME-MBO', "4KD Fhdoihqtbj Jxmabb\neqluuhp rcb Clqlfph RU-5426-Y4", "$\n86011.83", '21.00', "$\n3582.20", '1.00', "$\n2028.54"],
           ['O-PJH-HWXU-OE', "Ceoerpq, RFA psgzgszuxur\nhfp ZX-1850-K7; Xzved hhw\nfdlt le komlvq", '$72564.91', '32.00', '$3493.76', '1.00', '$7800.24'],
-          ['A-CYA-QAHN-LR', 'Kx Wxguab gng Kq Vprschwzfvku', '$0.00', '', '$0.00', '1.00', '$0.00']
+          ['A-CYA-QAHN-LR', 'Kx Wxguab gng Kq Vprschwzfvku', '$0.00', '', '$0.00', '1.00', '$0.00'],
+          ['N-ISU-MTNUTE-L.J-T-H', 'Dhwzt, ZUE, TEXI, 2547RB', '', '', '', '', '']
         ]
       )
     }

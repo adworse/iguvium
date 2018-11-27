@@ -16,6 +16,7 @@ module Iguvium
       @box = box
       @lines = page.lines
       @page = page
+      grid
     end
 
     # Renders the table into an array of strings.
@@ -30,7 +31,8 @@ module Iguvium
     # @return [Array] 2D array of strings (content of table's cells)
     #
     def to_a(newlines: false, phrases: true)
-      grid[:rows]
+      @to_a ||=
+        grid[:rows]
         .reverse
         .map { |row|
         grid[:columns].map do |column|
@@ -42,12 +44,54 @@ module Iguvium
       }
     end
 
+
+    # Looks if there are characters inside the box but outside of already detected cells
+    # and adds rows and/or columns if necessary.
+    # @return [Iguvium::Table] with added open-cell rows and columns
+    def heal
+      heal_rows
+      heal_cols
+      self
+    end
+
+    # def width
+    #   grid[:columns].count
+    # end
+
+    # def mergeable?(other)
+    #   width == other.width
+    # end
+
+    # def roofless?
+    #   @roofless
+    # end
+
+    # def floorless?
+    #   @floorless
+    # end
+
     private
 
     attr_reader :page, :lines, :box
 
-    def enhancer(grid)
-      # @todo write grid enhancer to detect cells between outer grid lines and box borders
+    def heal_cols
+      leftcol = box.first.begin..grid[:columns].first.begin
+      rightcol = grid[:columns].last.end..box.first.end
+      @grid[:columns].unshift(leftcol) if chars_inside(leftcol, box.last).any?
+      @grid[:columns].append(rightcol) if chars_inside(rightcol, box.last).any?
+    end
+
+    def heal_rows
+      roofrow = box.last.begin..grid[:rows].first.begin
+      floorrow = grid[:rows].last.end..box.last.end
+      if chars_inside(box.first, roofrow).any?
+        @grid[:rows].unshift(roofrow)
+        @roofless = true
+      end
+      if chars_inside(box.first, floorrow).any?
+        @grid[:rows].append(floorrow)
+        @floorless = true
+      end
     end
 
     def characters
@@ -74,7 +118,9 @@ module Iguvium
     end
 
     def grid
-      @grid ||=
+      return @grid if @grid
+
+      @grid =
         {
           rows: lines_to_ranges(lines[:horizontal]),
           columns: lines_to_ranges(lines[:vertical])
