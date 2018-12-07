@@ -185,8 +185,6 @@ module Iguvium
     def box(coord_array)
       ax, bx = coord_array.map(&:last).minmax
       ay, by = coord_array.map(&:first).minmax
-      # TODO: after processing pure unblurred image box should be broaden by ± 2 pixel
-      # [ax - 2..bx + 2, flip_range(ay - 2..by + 2)]
       [ax..bx, flip_range(ay..by)]
     end
   end

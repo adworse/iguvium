@@ -18,6 +18,7 @@ opts = Slop.parse { |o|
   end
   o.on '-h', '--help', 'show help' do
     puts o.to_s.gsub(/(usage:).+(iguvium)/, '\1 \2 filename.pdf')
+    puts Iguvium::VERSION
     exit
   end
 }

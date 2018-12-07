@@ -24,7 +24,8 @@ Get this table:
 
 * Characters extraction is done by [PDF::Reader gem](https://github.com/yob/pdf-reader). Some PDFs are so messed up it can't extract meaningful text from them. If so, so does Iguvium.
 
-* Current version extracts regular (with constant number of rows per column and vise versa) tables with explicit lines formatting, like this:
+* Current version extracts regular (with constant number of rows per column and vise versa) 
+tables with explicit lines formatting, like this:
 
 ```
 .__________________.
@@ -32,7 +33,15 @@ Get this table:
 |____|_______|_____|
 |____|_______|_____|
 ```
-  Merged cells content is split as if cells were not merged.
+And, after version 0.9.0, like this:
+```
+__|____|_______|_____|
+__|____|_______|_____|
+__|____|_______|_____|
+```
+
+
+  Merged cells content is split as if cells were not merged unless you use `:phrases` option.
 
 * Performance: considering the fact it has computer vision under the hood, the gem is reasonably fast. Full page extraction takes up to 1 second on modern CPUs and up to 2 seconds on the older ones.
 
@@ -107,15 +116,7 @@ Initially inspired by [camelot](https://github.com/socialcopsdev/camelot/) idea 
 
 ## Roadmap
 
-The next version will deal with open-edged tables like
-
-```
-__|____|_______|_____|
-__|____|_______|_____|
-__|____|_______|_____|
-```
-
-It also will keep open-edged rows metadata ('floorless' and 'roofless') for the needs of multipage tables merger.
+The next version will keep open-edged rows metadata ('floorless' and 'roofless') for the needs of multipage tables merger.
 
 The final one will recognize tables with merged cells.
 
