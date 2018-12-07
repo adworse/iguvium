@@ -80,6 +80,7 @@ module Iguvium
     end
 
     def box_empty?(box)
+      # TODO: shrink box before test
       characters.select { |character|
         box.first.cover?(character.x) && box.last.cover?(character.y)
       }.empty?

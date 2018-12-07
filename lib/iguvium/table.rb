@@ -35,15 +35,14 @@ module Iguvium
         grid[:rows]
         .reverse
         .map { |row|
-        grid[:columns].map do |column|
-          render(
-            phrases ? words_inside(column, row) : chars_inside(column, row),
-            newlines: newlines
-          )
-        end
-      }
+          grid[:columns].map do |column|
+            render(
+              phrases ? words_inside(column, row) : chars_inside(column, row),
+              newlines: newlines
+            )
+          end
+        }
     end
-
 
     # Looks if there are characters inside the box but outside of already detected cells
     # and adds rows and/or columns if necessary.
@@ -74,6 +73,13 @@ module Iguvium
 
     attr_reader :page, :lines, :box
 
+    def wide_box
+      @wide_box ||= [
+        box.first.begin - 2..box.first.end + 2,
+        box.last.begin - 2..box.last.end + 2
+      ]
+    end
+
     def heal_cols
       leftcol = box.first.begin..grid[:columns].first.begin
       rightcol = grid[:columns].last.end..box.first.end
@@ -82,6 +88,7 @@ module Iguvium
     end
 
     def heal_rows
+      # TODO: shrink box (like `box.last.end - 2`)
       roofrow = box.last.begin..grid[:rows].first.begin
       floorrow = grid[:rows].last.end..box.last.end
       if chars_inside(box.first, roofrow).any?
@@ -128,7 +135,8 @@ module Iguvium
     end
 
     def lines_to_ranges(lines)
-      lines.select { |line| line_in_box?(line, box) }
+      # TODO: extend box for the sake of lines select
+      lines.select { |line| line_in_box?(line, wide_box) }
            .map { |line| line.first.is_a?(Numeric) ? line.first : line.last }
            .sort
            .uniq

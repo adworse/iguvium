@@ -8,10 +8,10 @@ RSpec.describe Iguvium::Table do
   context 'auction' do
     let(:path) { 'spec/files/auction.pdf' }
     let(:page_index) { 0 }
-    let(:table_index) { 1 }
+    let(:table_index) { 0 }
 
     it {
-      expect(table.to_a(newlines: true)).to eql(
+      expect(table.heal.to_a(newlines: true)).to eql(
         [
           ['String Won', 'Applicant', 'Application ID', 'Winning Price', 'Date of Auction'],
           ['HOTELS', 'Booking.com B.V.', '1-1016-75482', '$2,200,000', '18-Nov-2015']
@@ -26,7 +26,7 @@ RSpec.describe Iguvium::Table do
     let(:table_index) { 0 }
 
     it {
-      expect(table.to_a).to eql(
+      expect(table.heal.to_a).to eql(
         [
           ['19', 'Наименование территориального органа Пенсионного фонда', 'Управление Пенсионного фонда РФ в Нижегородском районе г.Нижнего Новгорода'],
           ['20', 'ГРН и дата внесения в ЕГРИП записи, содержащей указанные сведения', '417527500408352 13.06.2017'],
@@ -65,7 +65,7 @@ RSpec.describe Iguvium::Table do
     let(:table_index) { 1 }
 
     it {
-      expect(table.to_a).to eql(
+      expect(table.heal.to_a).to eql(
         [
           ['Схемы', '', '№ вопросов', '', '', '', '▯', '▯ 1', '▯ 2', '▯ 3'],
           ['1.Эмоциональная депривированность', '1', '19', '37', '55', '73', '', '', '', ''],
@@ -97,7 +97,7 @@ RSpec.describe Iguvium::Table do
     let(:table_index) { 0 }
 
     it {
-      expect(table.to_a(newlines: true, phrases: false)).to eql(
+      expect(table.heal.to_a(newlines: true, phrases: false)).to eql(
         [
           ['1. ', '2. Doing/Not ', '3. Hidden Competing ', '4. Big Assumption(s) '],
           ["Commitment \n(Improvement \nGoal)\n ", "Doing \n(Instead of #1)\n ", "Commitmen\nt\n ", ''],
@@ -140,13 +140,13 @@ RSpec.describe Iguvium::Table do
     }
   end
 
-  context 'quote' do
+  context 'foo' do
     let(:path) { 'spec/files/foo.pdf' }
     let(:page_index) { 0 }
     let(:table_index) { 0 }
 
     it {
-      expect(table.to_a(phrases: true)).to eql(
+      expect(table.heal.to_a(phrases: true)).to eql(
         [
           ['', '', '', '', 'Percent Fuel Savings', '', ''],
           ['Cycle Name', 'KI (1/km)', 'Distance (mi)', 'Improved Speed', 'Decreased Accel', 'Eliminate Stops', 'Decreased Idle'],

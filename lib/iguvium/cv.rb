@@ -39,11 +39,11 @@ module Iguvium
     # Prepares image for recognition: initial blur
     # @param image [ChunkyPNG::Image] from {Iguvium::Image.read}
     def initialize(image)
-      @image = blur image
+      @blurred = blur(image)
+      @image = to_narray(image).to_a
     end
 
-    # @return [Array] 8-bit representation of an image
-    attr_reader :image
+    attr_reader :image, :blurred
 
     # @return [Recognized]
     #   lines most probably forming table cells and tables' outer borders as boxes
@@ -62,9 +62,8 @@ module Iguvium
         {
           vertical: Labeler.new(verticals)
                            .lines
-                           .map { |line| flip_line line }
-                           .sort_by { |x, yrange| [yrange.begin, x] },
-          horizontal: Labeler.new(horizontals).lines.map { |line| flip_line line }.sort_by { |_, y| [y] }
+                           .map { |line| flip_line line },
+          horizontal: Labeler.new(horizontals).lines.map { |line| flip_line line }
         }
     end
 
@@ -80,14 +79,14 @@ module Iguvium
 
     def verticals(threshold = 3)
       Matrix
-        .rows(convolve(NArray[*horizontal_scan(image)], VERTICAL, 0).to_a)
+        .rows(convolve(NArray[*horizontal_scan(blurred)], VERTICAL, 0).to_a)
         .map { |pix| pix < threshold ? nil : pix }
         .to_a
     end
 
     def horizontals(threshold = 3)
       Matrix
-        .rows(convolve(NArray[*vertical_scan(image)], HORIZONTAL, 0).to_a)
+        .rows(convolve(NArray[*vertical_scan(blurred)], HORIZONTAL, 0).to_a)
         .map { |pix| pix < threshold ? nil : pix }
         .to_a
     end
@@ -186,8 +185,8 @@ module Iguvium
     def box(coord_array)
       ax, bx = coord_array.map(&:last).minmax
       ay, by = coord_array.map(&:first).minmax
-      # additional pixels removed from the box definition
-      # [ax - 1..bx + 1, ay - 1..by + 1]
+      # TODO: after processing pure unblurred image box should be broaden by ± 2 pixel
+      # [ax - 2..bx + 2, flip_range(ay - 2..by + 2)]
       [ax..bx, flip_range(ay..by)]
     end
   end
