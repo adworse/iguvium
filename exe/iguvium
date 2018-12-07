@@ -9,7 +9,6 @@ opts = Slop.parse { |o|
   o.array '-p', '--pages', 'page numbers, comma-separated, no spaces'
   o.bool '-i', '--images', 'use pictures in pdf (usually a bad idea)'
   o.bool '-n', '--newlines', 'keep newlines'
-  o.bool '--heal', 'parse open cells w/o outer borders'
   o.bool '--phrases', 'keep phrases unsplit, could fix some merged cells'
   o.bool '-t', '--text', 'extract full page text instead of tables'
   o.bool '--verbose', 'verbose output'
@@ -56,7 +55,6 @@ page_numbers.each do |number|
   tables.empty? ? puts('no tables found') : puts
 
   tables.each_with_index do |table, i|
-    table = table.heal if opts[:heal]
     csv = table.to_a(newlines: opts[:newlines], phrases: opts[:phrases]).map(&:to_csv).join
     next if csv.empty?
     csv_file = "#{path.gsub(/\.pdf$/, '')}_page_#{number + 1}_table_#{i}.csv"

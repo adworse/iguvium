@@ -45,15 +45,6 @@ module Iguvium
         }
     end
 
-    # Looks if there are characters inside the box but outside of already detected cells
-    # and adds rows and/or columns if necessary.
-    # @return [Iguvium::Table] with added open-cell rows and columns
-    def heal
-      heal_rows
-      heal_cols
-      self
-    end
-
     # def width
     #   grid[:columns].count
     # end
@@ -73,6 +64,15 @@ module Iguvium
     private
 
     attr_reader :page, :lines, :box
+
+    # Looks if there are characters inside the box but outside of already detected cells
+    # and adds rows and/or columns if necessary.
+    # @return [Iguvium::Table] with added open-cell rows and columns
+    def heal
+      heal_rows
+      heal_cols
+      self
+    end
 
     def wide_box
       @wide_box ||= [
