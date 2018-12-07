@@ -2,6 +2,16 @@
 
 ## [Unreleased]
 
+## [0.9.0] - 2018-12-07
+### Added
+- Open cells rendering added. Tables like this are now processed correctly:
+```
+__|____|_______|_____|
+__|____|_______|_____|
+__|____|_______|_____|
+```
+
+
 ## [0.8.4] - 2018-11-24
 ### Changed
 - Render phrases before cell assembly option of Iguvium::Table#to_a method is now true by default. 

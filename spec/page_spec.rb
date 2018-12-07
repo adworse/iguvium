@@ -14,9 +14,9 @@ RSpec.describe Iguvium::Page do
 
     it { expect(page.text.strip).to start_with 'ICANN New gTLD Contention Set Resolution Auction' }
 
-    it '#extract_tables! returns 5 of Iguvium::Table' do
+    it '#extract_tables! returns 3 of Iguvium::Table' do
       expect(tables)
-        .to have_attributes(count: 5)
+        .to have_attributes(count: 3)
         .and all be_a Iguvium::Table
     end
   end
