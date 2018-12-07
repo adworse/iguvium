@@ -17,6 +17,7 @@ module Iguvium
       @lines = page.lines
       @page = page
       grid
+      heal
     end
 
     # Renders the table into an array of strings.
