@@ -89,7 +89,6 @@ module Iguvium
     end
 
     def heal_rows
-      # TODO: shrink box (like `box.last.end - 2`)
       roofrow = box.last.begin..grid[:rows].first.begin
       floorrow = grid[:rows].last.end..box.last.end
       if chars_inside(box.first, roofrow).any?
@@ -136,7 +135,6 @@ module Iguvium
     end
 
     def lines_to_ranges(lines)
-      # TODO: extend box for the sake of lines select
       lines.select { |line| line_in_box?(line, wide_box) }
            .map { |line| line.first.is_a?(Numeric) ? line.first : line.last }
            .sort

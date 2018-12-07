@@ -116,11 +116,6 @@ module Iguvium
   end
 end
 
-# TODO: 4) Add options like maybe image thresholding
-#
-# TODO: 6) 0.9 - version capable of reading tables with open outer cells, like this:
-# __|____|_______|_____|
-# __|____|_______|_____|
-# __|____|_______|_____|
-#
+
+
 # TODO: 7) 1.0 - in addition it should deal with merged cells (move result to the upper left cell).
