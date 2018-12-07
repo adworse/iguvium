@@ -8,7 +8,7 @@ RSpec.describe Iguvium::Table do
   context 'auction' do
     let(:path) { 'spec/files/auction.pdf' }
     let(:page_index) { 0 }
-    let(:table_index) { 1 }
+    let(:table_index) { 0 }
 
     it {
       expect(table.to_a(newlines: true)).to eql(
@@ -133,13 +133,14 @@ RSpec.describe Iguvium::Table do
           ['W-FVJ-ATF-A-S-DP', "11ZbV Tvbv ZJY+ Sliwomh\nWxoookn", '', '32.10', '', '1.00', ''],
           ['H-VPO-HUZC-ME-MBO', "4KD Fhdoihqtbj Jxmabb\neqluuhp rcb Clqlfph RU-5426-Y4", "$\n86011.83", '21.00', "$\n3582.20", '1.00', "$\n2028.54"],
           ['O-PJH-HWXU-OE', "Ceoerpq, RFA psgzgszuxur\nhfp ZX-1850-K7; Xzved hhw\nfdlt le komlvq", '$72564.91', '32.00', '$3493.76', '1.00', '$7800.24'],
-          ['A-CYA-QAHN-LR', 'Kx Wxguab gng Kq Vprschwzfvku', '$0.00', '', '$0.00', '1.00', '$0.00']
+          ['A-CYA-QAHN-LR', 'Kx Wxguab gng Kq Vprschwzfvku', '$0.00', '', '$0.00', '1.00', '$0.00'],
+          ['N-ISU-MTNUTE-L.J-T-H', 'Dhwzt, ZUE, TEXI, 2547RB', '', '', '', '', '']
         ]
       )
     }
   end
 
-  context 'quote' do
+  context 'foo' do
     let(:path) { 'spec/files/foo.pdf' }
     let(:page_index) { 0 }
     let(:table_index) { 0 }
