@@ -116,6 +116,4 @@ module Iguvium
   end
 end
 
-
-
 # TODO: 7) 1.0 - in addition it should deal with merged cells (move result to the upper left cell).

@@ -125,9 +125,7 @@ module Iguvium
     end
 
     def grid
-      return @grid if @grid
-
-      @grid =
+      @grid ||=
         {
           rows: lines_to_ranges(lines[:horizontal]),
           columns: lines_to_ranges(lines[:vertical])
