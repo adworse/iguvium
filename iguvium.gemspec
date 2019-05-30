@@ -11,8 +11,8 @@ Gem::Specification.new do |spec|
   spec.email         = ['dima@scriptangle.com']
 
   spec.summary       = 'Extract tables from PDF as a structured info'
-  spec.description   = 'Extract tables from PDF as a structured info. Uses ghostscript to print pdf to image, \
-then recognizes table separators optically. No OpenCV or other heavy dependencies'
+  spec.description   = "Extract tables from PDF as a structured info. Uses ghostscript to print pdf \
+to image, then recognizes table separators optically. No OpenCV or other heavy dependencies"
   spec.homepage      = 'https://github.com/adworse/iguvium'
   spec.license       = 'MIT'
 
@@ -29,9 +29,9 @@ then recognizes table separators optically. No OpenCV or other heavy dependencie
 
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'pdf-reader', '~> 2.1'
   spec.add_dependency 'convolver-light', '~> 0.3.1'
   spec.add_dependency 'oily_png', '~> 1.2'
+  spec.add_dependency 'pdf-reader', '~> 2.1'
   spec.add_dependency 'slop', '~> 4.2'
 
   spec.add_development_dependency 'bundler', '~> 1.16'

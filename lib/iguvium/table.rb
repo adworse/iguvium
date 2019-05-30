@@ -32,17 +32,16 @@ module Iguvium
     # @return [Array] 2D array of strings (content of table's cells)
     #
     def to_a(newlines: false, phrases: true)
-      @to_a ||=
-        grid[:rows]
+      grid[:rows]
         .reverse
         .map { |row|
-          grid[:columns].map do |column|
-            render(
-              phrases ? words_inside(column, row) : chars_inside(column, row),
-              newlines: newlines
-            )
-          end
-        }
+        grid[:columns].map do |column|
+          render(
+            phrases ? words_inside(column, row) : chars_inside(column, row),
+            newlines: newlines
+          )
+        end
+      }
     end
 
     # def width

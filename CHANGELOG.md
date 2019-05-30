@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [0.9.1] - 2019-05-30
+### Fixed
+- Remove Iguvium::Table#to_a result caching 
+
 ## [0.9.0] - 2018-12-07
 ### Added
 - Open cells rendering added. Tables like this are now processed correctly:
