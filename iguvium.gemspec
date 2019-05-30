@@ -34,7 +34,7 @@ to image, then recognizes table separators optically. No OpenCV or other heavy d
   spec.add_dependency 'pdf-reader', '~> 2.1'
   spec.add_dependency 'slop', '~> 4.2'
 
-  spec.add_development_dependency 'bundler', '~> 1.16'
+  spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
 end
