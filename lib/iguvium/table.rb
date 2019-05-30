@@ -60,6 +60,14 @@ module Iguvium
     #   @floorless
     # end
 
+    def grid
+      @grid ||=
+          {
+              rows: lines_to_ranges(lines[:horizontal]),
+              columns: lines_to_ranges(lines[:vertical])
+          }
+    end
+
     private
 
     attr_reader :page, :lines, :box
@@ -68,8 +76,8 @@ module Iguvium
     # and adds rows and/or columns if necessary.
     # @return [Iguvium::Table] with added open-cell rows and columns
     def heal
-      heal_rows
-      heal_cols
+      heal_rows unless grid[:rows].empty?
+      heal_cols unless grid[:columns].empty?
       self
     end
 
@@ -121,14 +129,6 @@ module Iguvium
       words.select { |character|
         xrange.cover?(character.x) && yrange.cover?(character.y)
       }
-    end
-
-    def grid
-      @grid ||=
-        {
-          rows: lines_to_ranges(lines[:horizontal]),
-          columns: lines_to_ranges(lines[:vertical])
-        }
     end
 
     def lines_to_ranges(lines)

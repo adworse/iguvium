@@ -4,7 +4,8 @@
 
 ## [0.9.1] - 2019-05-30
 ### Fixed
-- Remove Iguvium::Table#to_a result caching 
+- Rare `undefined method 'begin' for nil:NilClass` error fixed
+- Remove Iguvium::Table#to_a result caching
 
 ## [0.9.0] - 2018-12-07
 ### Added

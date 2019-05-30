@@ -75,7 +75,10 @@ module Iguvium
       recognized = CV.new(image).recognize
       @lines = recognized[:lines]
       @boxes = recognized[:boxes].reject { |box| box_empty?(box) }
-      @tables = @boxes.map { |box| Table.new(box, self) }.reverse
+      @tables = @boxes
+                .map { |box| Table.new(box, self) }
+                .reject { |table| table.grid[:rows].empty? || table.grid[:columns].empty? }
+                .reverse
       self
     end
 
