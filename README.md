@@ -110,6 +110,8 @@ just page text. The latter is useful in case of whitespace-separated fixed-width
 There are usually no actual tables in PDFs, only characters with coordinates,
 and some fancy lines. Human eye interprets this as a table. Iguvium behaves quite similarly. It prints PDF to an image file with GhostScript, then analyses the image.
 
+(Later clarification as per request. It only prints anything but text and images (-dFILTERTEXT -dFILTERIMAGE params of GhostScript, which lefts lines, curves, etc.) to analyze table structure. Text fields are extracted from pdf codepoints, if there are any. Trying to do otherwise would imply a full-blown OCR solution, something like FineReader. So with scanned image-only pdfs it is like an ideal unmatch: nothing is actually printed and there's no text to extract.)
+
 Long enough continuous edges are interpreted as possible cell borders. Gaussian blur is applied beforehand to get rid of possible inconsistencies and style features.
 
 Initially inspired by [camelot](https://github.com/socialcopsdev/camelot/) idea of image analysis to detect table structure. Besides this idea, is an independent work. Image recognition is written in Ruby, no OpenCV or other heavy computer vision libraries are used. Line detection algorithms are different too. The functionality of Camelot is significantly broader.
