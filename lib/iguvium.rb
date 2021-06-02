@@ -101,7 +101,7 @@ module Iguvium
     private
 
     def gs_nix?
-      if `which gs`.empty?
+      if !(`gs --help` =~ /ghostscript/)
         puts "There's no gs utility in your $PATH.
   Please install GhostScript with `brew install ghostscript` on Mac
   or download it here: https://www.ghostscript.com/download/gsdnld.html"
