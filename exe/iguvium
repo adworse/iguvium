@@ -30,7 +30,7 @@ abort('No file name given') unless path
 opts = opts.to_hash
 page_numbers = opts.delete(:pages).map { |number| number.to_i - 1 }
 
-pages = Iguvium.read(path, opts)
+pages = Iguvium.read(path, **opts)
 
 Iguvium.logger.level = Logger::INFO if opts[:verbose]
 
