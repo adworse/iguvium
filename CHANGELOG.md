@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## [0.9.2] - 2019-05-30
+### Fixed
+- Solving deprecated use of keyword arguments in method calls in Ruby 3
+- Matrix gem needs to be an explicit dependency as of Ruby 3.1.
+
 ## [0.9.1] - 2019-05-30
 ### Fixed
 - Rare `undefined method 'begin' for nil:NilClass` error fixed
