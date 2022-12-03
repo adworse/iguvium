@@ -73,7 +73,7 @@ module Iguvium
         opts[:gspath] ||= gs_nix?
       end
 
-      PDF::Reader.new(path, opts).pages.map { |page| Page.new(page, path, opts) }
+      PDF::Reader.new(path, opts).pages.map { |page| Page.new(page, path, **opts) }
     end
 
     # Creates and gives access to Ruby Logger. Default [Logger::Level] is Logger::ERROR.
