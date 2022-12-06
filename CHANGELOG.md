@@ -2,7 +2,11 @@
 
 ## [Unreleased]
 
-## [0.9.2] - 2019-05-30
+## [0.9.3] - 2022-12-06
+### Improv
+- `which` command dependency removed
+
+## [0.9.2] - 2022-12-03
 ### Fixed
 - Solving deprecated use of keyword arguments in method calls in Ruby 3
 - Matrix gem needs to be an explicit dependency as of Ruby 3.1.
